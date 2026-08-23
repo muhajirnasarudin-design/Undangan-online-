@@ -1,336 +1,469 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Undangan Pernikahan</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+  <title>Undangan Pernikahan</title>
 
-html{
-  scroll-behavior:smooth;
-}
+  <meta name="description" content="Undangan Pernikahan Digital">
 
-body{
-  font-family:Arial,sans-serif;
-  background:#f8eef1;
-  color:#382c31;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body.locked{
-  overflow:hidden;
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-#loading{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  background:#fff7f9;
-}
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7eef1;
+      color: #382c31;
+    }
 
-.loading-box{
-  background:white;
-  padding:35px;
-  border-radius:25px;
-  box-shadow:0 15px 50px rgba(80,40,55,.12);
-}
+    body.locked {
+      overflow: hidden;
+    }
 
-.loading-heart{
-  font-size:50px;
-  margin-bottom:15px;
-  animation:pulse 1.5s infinite;
-}
+    #loading,
+    #error {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 25px;
+      background: #fff7f9;
+    }
 
-@keyframes pulse{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.15)}
-}
+    #error {
+      display: none;
+    }
 
-#error{
-  display:none;
-  min-height:100vh;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:25px;
-  background:#fff7f9;
-}
+    .loading-box,
+    .error-box {
+      background: white;
+      padding: 35px;
+      border-radius: 25px;
+      max-width: 450px;
+      box-shadow: 0 15px 50px rgba(80,40,55,.12);
+    }
 
-.error-box{
-  max-width:450px;
-  background:white;
-  padding:35px;
-  border-radius:25px;
-  box-shadow:0 15px 50px rgba(80,40,55,.12);
-}
+    .loading-heart,
+    .error-icon {
+      font-size: 50px;
+      margin-bottom: 15px;
+    }
 
-.error-icon{
-  font-size:50px;
-  margin-bottom:15px;
-}
+    .loading-heart {
+      animation: pulse 1.5s infinite;
+    }
 
-.error-box h2{
-  font-family:Georgia,serif;
-  margin-bottom:12px;
-}
+    @keyframes pulse {
+      0%,100% {
+        transform: scale(1);
+      }
 
-.error-box p{
-  color:#806b72;
-  line-height:1.7;
-  margin-bottom:20px;
-}
+      50% {
+        transform: scale(1.15);
+      }
+    }
 
-#error a{
-  display:inline-block;
-  padding:12px 22px;
-  background:#b65b77;
-  color:white;
-  border-radius:12px;
-  text-decoration:none;
-}
+    .error-box h2 {
+      font-family: Georgia, serif;
+      margin-bottom: 12px;
+    }
 
-#app{
-  display:none;
-}
+    .error-box p {
+      color: #806b72;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
 
-.cover{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:white;
-  padding:30px;
-  background:
-    linear-gradient(rgba(30,15,20,.48),rgba(30,15,20,.58)),
-    linear-gradient(135deg,#f8ccd8,#9e536c);
-  background-size:cover;
-  background-position:center;
-}
+    .error-box a {
+      display: inline-block;
+      padding: 12px 22px;
+      background: #b65b77;
+      color: white;
+      border-radius: 12px;
+      text-decoration: none;
+    }
 
-.cover-content{
-  max-width:750px;
-}
+    #app {
+      display: none;
+    }
 
-.cover small{
-  letter-spacing:5px;
-  font-size:12px;
-}
+    .cover {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 30px;
 
-.cover h1{
-  font-family:Georgia,serif;
-  font-size:clamp(48px,10vw,90px);
-  font-weight:normal;
-  line-height:.9;
-  margin:30px 0;
-}
+      background:
+        linear-gradient(
+          rgba(30,15,20,.48),
+          rgba(30,15,20,.58)
+        ),
+        linear-gradient(
+          135deg,
+          #f8ccd8,
+          #9e536c
+        );
 
-.cover .date{
-  margin-bottom:28px;
-}
+      background-size: cover;
+      background-position: center;
+    }
 
-.open-button{
-  border:0;
-  background:white;
-  color:#9d526b;
-  padding:15px 27px;
-  border-radius:30px;
-  font-weight:bold;
-  cursor:pointer;
-}
+    .cover-content {
+      max-width: 800px;
+      position: relative;
+      z-index: 2;
+    }
 
-.content{
-  max-width:850px;
-  margin:auto;
-  background:#fffdfd;
-}
+    .cover small {
+      letter-spacing: 5px;
+      font-size: 12px;
+    }
 
-section{
-  padding:70px 25px;
-  text-align:center;
-}
+    .cover h1 {
+      font-family: Georgia, serif;
+      font-size: clamp(48px, 10vw, 90px);
+      font-weight: normal;
+      line-height: .9;
+      margin: 30px 0;
+      text-shadow: 0 5px 25px rgba(0,0,0,.25);
+    }
 
-.section-title{
-  font-family:Georgia,serif;
-  font-size:32px;
-  font-weight:normal;
-  margin-bottom:20px;
-}
+    .cover .date {
+      font-size: 16px;
+      margin-bottom: 28px;
+    }
 
-.section-subtitle{
-  color:#806b72;
-  line-height:1.9;
-  max-width:650px;
-  margin:auto;
-}
+    .religion-label {
+      margin: 15px 0 25px;
+      font-size: 14px;
+      opacity: .9;
+    }
 
-.couple{
-  background:#fff7f9;
-}
+    .open-button {
+      border: 0;
+      background: white;
+      color: #9d526b;
+      padding: 15px 27px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    }
 
-.couple-names{
-  font-family:Georgia,serif;
-  font-size:35px;
-  line-height:1.5;
-  color:#9d526b;
-}
+    .content {
+      max-width: 850px;
+      margin: auto;
+      background: #fffdfd;
+    }
 
-.amp{
-  font-size:25px;
-  color:#b88998;
-  margin:8px 0;
-}
+    section {
+      padding: 80px 25px;
+      text-align: center;
+    }
 
-.event-card{
-  max-width:650px;
-  margin:30px auto 0;
-  padding:30px;
-  border-radius:22px;
-  background:white;
-  box-shadow:0 15px 50px rgba(100,50,70,.08);
-}
+    .section-title {
+      font-family: Georgia, serif;
+      font-size: 34px;
+      font-weight: normal;
+      margin-bottom: 20px;
+    }
 
-.event-icon{
-  font-size:38px;
-  margin-bottom:15px;
-}
+    .section-subtitle {
+      color: #806b72;
+      line-height: 1.9;
+      max-width: 680px;
+      margin: auto;
+    }
 
-.event-date{
-  font-family:Georgia,serif;
-  font-size:27px;
-  margin-bottom:15px;
-}
+    .religion-card {
+      max-width: 700px;
+      margin: 25px auto 0;
+      padding: 30px;
+      border-radius: 22px;
+      background: #fff7f9;
+      border: 1px solid #efdce2;
+    }
 
-.event-info{
-  color:#806b72;
-  line-height:2;
-}
+    .religion-icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
 
-.maps-button{
-  display:none;
-  margin-top:20px;
-  padding:12px 20px;
-  background:#b65b77;
-  color:white;
-  border-radius:12px;
-  text-decoration:none;
-  font-weight:bold;
-}
+    .religion-name {
+      font-family: Georgia, serif;
+      font-size: 25px;
+      margin-bottom: 15px;
+      color: #9d526b;
+    }
 
-.parents{
-  background:#fff7f9;
-}
+    .religion-text {
+      line-height: 2;
+      white-space: pre-line;
+      color: #66545b;
+    }
 
-.parents-text,
-.story{
-  max-width:680px;
-  margin:auto;
-  line-height:2;
-  color:#66545b;
-  white-space:pre-line;
-}
+    .couple {
+      background: #fff7f9;
+    }
 
-.story{
-  text-align:left;
-}
+    .couple-names {
+      font-family: Georgia, serif;
+      font-size: 35px;
+      line-height: 1.5;
+      color: #9d526b;
+    }
 
-.share-section{
-  background:#fff7f9;
-}
+    .amp {
+      font-size: 25px;
+      color: #b88998;
+      margin: 8px 0;
+    }
 
-.share-button{
-  border:0;
-  background:#b65b77;
-  color:white;
-  padding:14px 24px;
-  border-radius:30px;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:20px;
-}
+    .event-card {
+      max-width: 650px;
+      margin: 30px auto 0;
+      padding: 30px;
+      border-radius: 22px;
+      background: white;
+      box-shadow: 0 15px 50px rgba(100,50,70,.08);
+    }
 
-.wa-button{
-  display:inline-block;
-  margin-top:12px;
-  padding:13px 22px;
-  background:#25d366;
-  color:white;
-  border-radius:30px;
-  text-decoration:none;
-  font-weight:bold;
-}
+    .event-icon {
+      font-size: 38px;
+      margin-bottom: 15px;
+    }
 
-footer{
-  text-align:center;
-  padding:60px 25px;
-  background:#3a2b31;
-  color:white;
-}
+    .event-date {
+      font-family: Georgia, serif;
+      font-size: 27px;
+      margin-bottom: 15px;
+    }
 
-footer h2{
-  font-family:Georgia,serif;
-  font-weight:normal;
-  margin-bottom:15px;
-}
+    .event-info {
+      color: #806b72;
+      line-height: 2;
+    }
 
-footer p{
-  color:#d8c9ce;
-  font-size:13px;
-}
+    .maps-button {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #b65b77;
+      color: white;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-.music-button{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  border:0;
-  background:#b65b77;
-  color:white;
-  font-size:20px;
-  cursor:pointer;
-  z-index:999;
-}
+    .parents {
+      background: #fff7f9;
+    }
 
-@media(max-width:600px){
-  section{
-    padding:60px 20px;
-  }
+    .parents-text,
+    .story {
+      white-space: pre-line;
+      max-width: 680px;
+      margin: auto;
+      line-height: 2;
+      color: #66545b;
+    }
 
-  .cover h1{
-    font-size:53px;
-  }
+    .story {
+      text-align: left;
+    }
 
-  .section-title{
-    font-size:29px;
-  }
+    .share-section {
+      background: #fff7f9;
+    }
 
-  .couple-names{
-    font-size:29px;
-  }
-}
-</style>
+    .share-button {
+      border: 0;
+      background: #b65b77;
+      color: white;
+      padding: 14px 24px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .wa-button {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 13px 22px;
+      background: #25d366;
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 60px 25px;
+      background: #3a2b31;
+      color: white;
+    }
+
+    footer h2 {
+      font-family: Georgia, serif;
+      font-weight: normal;
+      margin-bottom: 15px;
+    }
+
+    footer p {
+      color: #d8c9ce;
+      font-size: 13px;
+    }
+
+    .music-button {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 0;
+      background: #b65b77;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 999;
+      box-shadow: 0 8px 25px rgba(0,0,0,.2);
+    }
+
+    /* DARK GOLD */
+
+    body.theme-dark {
+      background: #171417;
+      color: #f8eef1;
+    }
+
+    body.theme-dark .content {
+      background: #201c1f;
+    }
+
+    body.theme-dark .couple,
+    body.theme-dark .parents,
+    body.theme-dark .share-section,
+    body.theme-dark .religion-card {
+      background: #181519;
+    }
+
+    body.theme-dark .section-subtitle,
+    body.theme-dark .event-info,
+    body.theme-dark .parents-text,
+    body.theme-dark .story,
+    body.theme-dark .religion-text {
+      color: #d3c5ca;
+    }
+
+    body.theme-dark .event-card {
+      background: #292326;
+    }
+
+    body.theme-dark .section-title,
+    body.theme-dark .event-date,
+    body.theme-dark .couple-names,
+    body.theme-dark .religion-name {
+      color: #f3d9a9;
+    }
+
+    body.theme-dark .maps-button,
+    body.theme-dark .share-button,
+    body.theme-dark .music-button {
+      background: #9c7747;
+    }
+
+    /* SAGE */
+
+    body.theme-sage .cover {
+      background:
+        linear-gradient(
+          rgba(30,45,35,.45),
+          rgba(30,45,35,.55)
+        ),
+        linear-gradient(
+          135deg,
+          #dbe5d5,
+          #66816d
+        );
+    }
+
+    body.theme-sage .content {
+      background: #fbfdf9;
+    }
+
+    body.theme-sage .couple,
+    body.theme-sage .parents,
+    body.theme-sage .share-section,
+    body.theme-sage .religion-card {
+      background: #f1f6ee;
+    }
+
+    body.theme-sage .couple-names,
+    body.theme-sage .religion-name {
+      color: #52715c;
+    }
+
+    body.theme-sage .maps-button,
+    body.theme-sage .share-button,
+    body.theme-sage .music-button {
+      background: #52715c;
+    }
+
+    @media(max-width:600px) {
+      section {
+        padding: 65px 20px;
+      }
+
+      .cover h1 {
+        font-size: 53px;
+      }
+
+      .section-title {
+        font-size: 29px;
+      }
+
+      .couple-names {
+        font-size: 29px;
+      }
+
+      .event-card,
+      .religion-card {
+        padding: 25px 18px;
+      }
+    }
+  </style>
 </head>
 
 <body class="locked">
 
 <!-- LOADING -->
+
 <div id="loading">
   <div class="loading-box">
     <div class="loading-heart">💍</div>
-    <p id="loadingText">Memuat undangan...</p>
+    <p>Memuat undangan...</p>
   </div>
 </div>
 
 <!-- ERROR -->
+
 <div id="error">
   <div class="error-box">
     <div class="error-icon">💌</div>
@@ -348,20 +481,28 @@ footer p{
 </div>
 
 <!-- APP -->
+
 <div id="app">
 
   <!-- COVER -->
+
   <div class="cover" id="cover">
 
     <div class="cover-content">
 
-      <small>THE WEDDING OF</small>
+      <small id="coverLabel">
+        THE WEDDING OF
+      </small>
 
       <h1>
         <span id="coverGroom">-</span>
+
         <br>
-        <span style="font-size:.55em">&</span>
+
+        <span style="font-size:.55em;">&</span>
+
         <br>
+
         <span id="coverBride">-</span>
       </h1>
 
@@ -369,30 +510,70 @@ footer p{
         -
       </div>
 
-      <button class="open-button" id="openButton">
+      <div class="religion-label" id="coverReligion">
+        Undangan Pernikahan
+      </div>
+
+      <button
+        class="open-button"
+        id="openButton"
+      >
         💌 Buka Undangan
       </button>
 
     </div>
+
   </div>
 
   <!-- CONTENT -->
+
   <main class="content" id="mainContent">
 
-    <!-- PEMBUKA -->
+    <!-- UCAPAN AGAMA -->
+
     <section class="couple">
 
       <h2 class="section-title">
-        Assalamu'alaikum Wr. Wb.
+        💌 Salam & Doa
       </h2>
 
-      <p class="section-subtitle" id="opening">
+      <div class="religion-card">
+
+        <div
+          class="religion-icon"
+          id="religionIcon"
+        >
+          🤍
+        </div>
+
+        <div
+          class="religion-name"
+          id="religionName"
+        >
+          -
+        </div>
+
+        <p
+          class="religion-text"
+          id="religionGreeting"
+        >
+          -
+        </p>
+
+      </div>
+
+      <div style="height:35px;"></div>
+
+      <p
+        class="section-subtitle"
+        id="opening"
+      >
         Dengan penuh rasa syukur,
         kami mengundang Bapak/Ibu/Saudara/i
         untuk hadir dalam acara pernikahan kami.
       </p>
 
-      <div style="height:35px"></div>
+      <div style="height:35px;"></div>
 
       <div class="couple-names">
 
@@ -407,6 +588,7 @@ footer p{
     </section>
 
     <!-- ACARA -->
+
     <section>
 
       <div class="event-icon">
@@ -423,7 +605,10 @@ footer p{
           📅
         </div>
 
-        <div class="event-date" id="eventDate">
+        <div
+          class="event-date"
+          id="eventDate"
+        >
           -
         </div>
 
@@ -455,29 +640,41 @@ footer p{
 
     </section>
 
-    <!-- ORANG TUA -->
-    <section class="parents" id="parentsSection">
+    <!-- KELUARGA -->
+
+    <section
+      class="parents"
+      id="parentsSection"
+    >
 
       <h2 class="section-title">
         Keluarga Mempelai
       </h2>
 
-      <p class="parents-text" id="parents"></p>
+      <p
+        class="parents-text"
+        id="parents"
+      ></p>
 
     </section>
 
     <!-- CERITA -->
+
     <section id="storySection">
 
       <h2 class="section-title">
-        Cerita Kami
+        ❤️ Cerita Kami
       </h2>
 
-      <p class="story" id="story"></p>
+      <p
+        class="story"
+        id="story"
+      ></p>
 
     </section>
 
     <!-- SHARE -->
+
     <section class="share-section">
 
       <h2 class="section-title">
@@ -489,7 +686,10 @@ footer p{
         kepada keluarga dan teman-teman.
       </p>
 
-      <button class="share-button" id="shareButton">
+      <button
+        class="share-button"
+        id="shareButton"
+      >
         📤 Bagikan Undangan
       </button>
 
@@ -508,32 +708,31 @@ footer p{
     </section>
 
     <!-- PENUTUP -->
+
     <section class="couple">
 
       <h2 class="section-title">
         Terima Kasih ❤️
       </h2>
 
-      <p class="section-subtitle">
+      <p class="section-subtitle" id="closingText">
         Merupakan suatu kehormatan dan
         kebahagiaan bagi kami apabila
         Bapak/Ibu/Saudara/i berkenan hadir
         dan memberikan doa restu.
-
-        <br><br>
-
-        Wassalamu'alaikum Wr. Wb.
       </p>
 
-      <div style="height:30px"></div>
+      <div style="height:30px;"></div>
 
       <div
         class="couple-names"
-        style="font-size:25px"
+        style="font-size:25px;"
       >
 
         <span id="footerGroom">-</span>
+
         &
+
         <span id="footerBride">-</span>
 
       </div>
@@ -542,9 +741,7 @@ footer p{
 
     <footer>
 
-      <h2>
-        UndanganKu
-      </h2>
+      <h2>UndanganKu</h2>
 
       <p>
         Dibuat dengan ❤️ untuk hari istimewa.
@@ -554,644 +751,838 @@ footer p{
 
   </main>
 
+  <!-- MUSIC -->
+
   <button
     class="music-button"
     id="musicButton"
+    title="Musik"
   >
     🔇
   </button>
 
 </div>
 
-<audio id="music" loop preload="auto"></audio>
+<audio
+  id="music"
+  loop
+  preload="auto"
+></audio>
 
 
 <!-- FIREBASE -->
+
 <script type="module">
 
-import { db } from "./firebase.js";
+  import { db }
+    from "./firebase.js";
 
-import {
-  collection,
-  query,
-  where,
-  getDocs
-} from
-"https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-
-
-const loading =
-  document.getElementById("loading");
-
-const errorBox =
-  document.getElementById("error");
-
-const errorMessage =
-  document.getElementById("errorMessage");
-
-const app =
-  document.getElementById("app");
-
-const loadingText =
-  document.getElementById("loadingText");
+  import {
+    collection,
+    query,
+    where,
+    getDocs
+  } from
+  "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 
-/* AMBIL SLUG */
+  const loading =
+    document.getElementById("loading");
 
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
+  const errorBox =
+    document.getElementById("error");
 
-const slug =
-  params.get("slug");
+  const app =
+    document.getElementById("app");
 
-
-console.log("SLUG:", slug);
-
-
-if (!slug) {
-
-  showError(
-    "Link undangan tidak memiliki slug."
-  );
-
-} else {
-
-  loadInvitation(slug);
-
-}
+  const errorMessage =
+    document.getElementById("errorMessage");
 
 
-/* LOAD DATA */
-
-async function loadInvitation(slug) {
-
-  try {
-
-    loadingText.textContent =
-      "Menghubungkan ke Firebase...";
-
-
-    console.log(
-      "Mencari slug:",
-      slug
+  const params =
+    new URLSearchParams(
+      window.location.search
     );
 
+  const slug =
+    params.get("slug");
 
-    const q =
-      query(
-        collection(
-          db,
-          "invitations"
-        ),
-        where(
-          "slug",
-          "==",
-          slug
-        )
+
+  /*
+  =====================================
+  DATA UCAPAN BERDASARKAN AGAMA
+  =====================================
+  */
+
+  const religionData = {
+
+    islam: {
+      name: "Islam",
+      icon: "☪️",
+
+      greeting:
+`Bismillahirrahmanirrahim
+
+Assalamu'alaikum Warahmatullahi Wabarakatuh.
+
+Dengan memohon rahmat dan ridha Allah SWT,
+kami bermaksud mengundang Bapak/Ibu/Saudara/i
+untuk hadir dan memberikan doa restu
+pada acara pernikahan kami.
+
+Semoga Allah SWT menjadikan pernikahan ini
+sebagai keluarga yang sakinah, mawaddah,
+wa rahmah serta senantiasa dilimpahkan
+keberkahan dan kebahagiaan.`,
+
+      closing:
+`Semoga Allah SWT memberikan keberkahan
+kepada kedua mempelai dan menyatukan
+keduanya dalam kebaikan.
+
+Jazakumullahu khairan katsiran.
+
+Wassalamu'alaikum Warahmatullahi Wabarakatuh.`
+
+    },
+
+
+    kristen: {
+      name: "Kristen",
+      icon: "✝️",
+
+      greeting:
+`Salam Kasih.
+
+Dengan penuh sukacita dan ucapan syukur
+kepada Tuhan, kami mengundang
+Bapak/Ibu/Saudara/i untuk hadir
+dalam perayaan pernikahan kami.
+
+Kiranya kasih dan penyertaan Tuhan
+senantiasa menyertai kehidupan
+rumah tangga kami.`,
+
+      closing:
+`Kiranya Tuhan memberkati pernikahan kami,
+menuntun setiap langkah kehidupan kami,
+dan memenuhi rumah tangga kami
+dengan kasih, damai, dan sukacita.
+
+Tuhan memberkati.`
+
+    },
+
+
+    katolik: {
+      name: "Katolik",
+      icon: "✝️",
+
+      greeting:
+`Dalam nama Bapa dan Putra dan Roh Kudus.
+
+Dengan penuh syukur atas kasih dan penyertaan
+Tuhan, kami mengundang Bapak/Ibu/Saudara/i
+untuk hadir dan menjadi bagian
+dari perayaan pernikahan kami.
+
+Semoga rahmat Tuhan selalu menyertai
+perjalanan hidup dan keluarga kami.`,
+
+      closing:
+`Semoga Tuhan memberkati keluarga kami,
+memberikan kasih, kedamaian,
+dan kesetiaan sepanjang kehidupan kami.
+
+Amin.`
+
+    },
+
+
+    hindu: {
+      name: "Hindu",
+      icon: "🕉️",
+
+      greeting:
+`Om Swastyastu.
+
+Dengan memohon anugerah dan tuntunan
+Ida Sang Hyang Widhi Wasa,
+kami mengundang Bapak/Ibu/Saudara/i
+untuk hadir dalam upacara pernikahan kami.
+
+Semoga kehidupan rumah tangga kami
+senantiasa diliputi keharmonisan,
+kedamaian dan kebahagiaan.`,
+
+      closing:
+`Semoga Ida Sang Hyang Widhi Wasa
+senantiasa memberikan tuntunan,
+keselamatan, keharmonisan,
+dan kebahagiaan dalam kehidupan kami.
+
+Om Santih, Santih, Santih Om.`
+
+    },
+
+
+    buddha: {
+      name: "Buddha",
+      icon: "☸️",
+
+      greeting:
+`Namo Buddhaya.
+
+Dengan penuh kebahagiaan dan rasa syukur,
+kami mengundang Bapak/Ibu/Saudara/i
+untuk hadir dan memberikan doa restu
+dalam pernikahan kami.
+
+Semoga kehidupan rumah tangga kami
+dilandasi cinta kasih, kebijaksanaan,
+kesetiaan, dan keharmonisan.`,
+
+      closing:
+`Semoga kami senantiasa mengembangkan
+cinta kasih, kebijaksanaan,
+kesabaran, dan pengertian
+dalam menjalani kehidupan bersama.
+
+Semoga semua makhluk berbahagia.`
+
+    }
+
+  };
+
+
+  /*
+  =====================================
+  CEK SLUG
+  =====================================
+  */
+
+  if (!slug) {
+
+    showError(
+      "Link undangan tidak memiliki slug."
+    );
+
+  } else {
+
+    loadInvitation(slug);
+
+  }
+
+
+  /*
+  =====================================
+  LOAD FIRESTORE
+  =====================================
+  */
+
+  async function loadInvitation(slug) {
+
+    try {
+
+      console.log(
+        "Mencari slug:",
+        slug
       );
 
 
-    loadingText.textContent =
-      "Mengambil data undangan...";
+      const q =
+        query(
+          collection(
+            db,
+            "invitations"
+          ),
+          where(
+            "slug",
+            "==",
+            slug
+          )
+        );
 
 
-    const snapshot =
-      await getDocs(q);
+      const snapshot =
+        await getDocs(q);
 
 
-    console.log(
-      "Jumlah data:",
-      snapshot.size
-    );
+      if (snapshot.empty) {
+
+        showError(
+          "Undangan dengan link \"" +
+          slug +
+          "\" tidak ditemukan."
+        );
+
+        return;
+
+      }
 
 
-    if (snapshot.empty) {
+      const data =
+        snapshot
+          .docs[0]
+          .data();
+
+
+      console.log(
+        "Data undangan:",
+        data
+      );
+
+
+      renderInvitation(data);
+
+
+    } catch (error) {
+
+      console.error(error);
 
       showError(
-        "Undangan dengan slug \"" +
-        slug +
-        "\" tidak ditemukan."
+        "Gagal memuat undangan: " +
+        error.message
       );
 
-      return;
+    }
+
+  }
+
+
+  /*
+  =====================================
+  RENDER
+  =====================================
+  */
+
+  function renderInvitation(data) {
+
+    const groom =
+      data.groomName ||
+      "Mempelai Pria";
+
+    const bride =
+      data.brideName ||
+      "Mempelai Wanita";
+
+
+    const religion =
+      (
+        data.religion ||
+        "islam"
+      ).toLowerCase();
+
+
+    const religionInfo =
+      religionData[religion] ||
+      religionData.islam;
+
+
+    document.title =
+      groom +
+      " & " +
+      bride +
+      " — Undangan Pernikahan";
+
+
+    setText(
+      "coverGroom",
+      groom
+    );
+
+    setText(
+      "coverBride",
+      bride
+    );
+
+    setText(
+      "groomName",
+      groom
+    );
+
+    setText(
+      "brideName",
+      bride
+    );
+
+    setText(
+      "footerGroom",
+      groom
+    );
+
+    setText(
+      "footerBride",
+      bride
+    );
+
+
+    /*
+    AGAMA
+    */
+
+    setText(
+      "religionName",
+      religionInfo.name
+    );
+
+    setText(
+      "religionIcon",
+      religionInfo.icon
+    );
+
+    setText(
+      "religionGreeting",
+      religionInfo.greeting
+    );
+
+    setText(
+      "coverReligion",
+      religionInfo.name
+    );
+
+    setText(
+      "closingText",
+      religionInfo.closing
+    );
+
+
+    /*
+    TANGGAL
+    */
+
+    if (data.eventDate) {
+
+      const tanggal =
+        formatDate(
+          data.eventDate
+        );
+
+      setText(
+        "coverDate",
+        tanggal
+      );
+
+      setText(
+        "eventDate",
+        tanggal
+      );
 
     }
 
 
-    const data =
-      snapshot.docs[0].data();
+    /*
+    JAM
+    */
 
-
-    console.log(
-      "DATA UNDANGAN:",
-      data
+    setText(
+      "eventTime",
+      data.eventTime || "-"
     );
 
 
-    renderInvitation(data);
+    /*
+    LOKASI
+    */
 
-
-  } catch(error) {
-
-    console.error(
-      "FIREBASE ERROR:",
-      error
+    setText(
+      "location",
+      data.location || "-"
     );
 
 
-    showError(
-      "Gagal memuat undangan: " +
-      error.message
-    );
+    /*
+    PEMBUKA CUSTOM
+    */
 
-  }
+    if (data.opening) {
 
-}
-
-
-/* RENDER */
-
-function renderInvitation(data) {
-
-  const groom =
-    data.groomName ||
-    "Mempelai Pria";
-
-  const bride =
-    data.brideName ||
-    "Mempelai Wanita";
-
-
-  document.title =
-    groom +
-    " & " +
-    bride +
-    " — Undangan Pernikahan";
-
-
-  setText(
-    "coverGroom",
-    groom
-  );
-
-  setText(
-    "coverBride",
-    bride
-  );
-
-  setText(
-    "groomName",
-    groom
-  );
-
-  setText(
-    "brideName",
-    bride
-  );
-
-  setText(
-    "footerGroom",
-    groom
-  );
-
-  setText(
-    "footerBride",
-    bride
-  );
-
-
-  /* TANGGAL */
-
-  if (data.eventDate) {
-
-    const tanggal =
-      formatDate(
-        data.eventDate
+      setText(
+        "opening",
+        data.opening
       );
 
-    setText(
-      "coverDate",
-      tanggal
-    );
-
-    setText(
-      "eventDate",
-      tanggal
-    );
-
-  }
+    }
 
 
-  /* JAM */
+    /*
+    ORANG TUA
+    */
 
-  setText(
-    "eventTime",
-    data.eventTime || "-"
-  );
+    if (data.parents) {
 
-
-  /* LOKASI */
-
-  setText(
-    "location",
-    data.location || "-"
-  );
-
-
-  /* PEMBUKA */
-
-  if (data.opening) {
-
-    setText(
-      "opening",
-      data.opening
-    );
-
-  }
-
-
-  /* ORANG TUA */
-
-  if (data.parents) {
-
-    setText(
-      "parents",
-      data.parents
-    );
-
-  } else {
-
-    document
-      .getElementById(
-        "parentsSection"
-      )
-      .style.display =
-      "none";
-
-  }
-
-
-  /* CERITA */
-
-  if (data.story) {
-
-    setText(
-      "story",
-      data.story
-    );
-
-  } else {
-
-    document
-      .getElementById(
-        "storySection"
-      )
-      .style.display =
-      "none";
-
-  }
-
-
-  /* GOOGLE MAPS */
-
-  if (data.maps) {
-
-    const mapsButton =
-      document.getElementById(
-        "mapsButton"
+      setText(
+        "parents",
+        data.parents
       );
 
-    mapsButton.href =
-      data.maps;
+    } else {
 
-    mapsButton.style.display =
-      "inline-block";
+      document
+        .getElementById(
+          "parentsSection"
+        )
+        .style.display =
+        "none";
 
-  }
-
-
-  /* FOTO COVER */
-
-  if (data.image) {
-
-    document
-      .getElementById("cover")
-      .style.backgroundImage =
-      `
-      linear-gradient(
-        rgba(30,15,20,.45),
-        rgba(30,15,20,.55)
-      ),
-      url("${data.image}")
-      `;
-
-  }
+    }
 
 
-  /* TEMA */
+    /*
+    CERITA
+    */
 
-  if (data.theme === "dark") {
+    if (data.story) {
 
-    document.body.classList.add(
-      "theme-dark"
-    );
+      setText(
+        "story",
+        data.story
+      );
 
-  }
+    } else {
 
+      document
+        .getElementById(
+          "storySection"
+        )
+        .style.display =
+        "none";
 
-  if (data.theme === "sage") {
-
-    document.body.classList.add(
-      "theme-sage"
-    );
-
-  }
-
-
-  /* WHATSAPP */
-
-  setupWhatsApp(
-    groom,
-    bride,
-    data
-  );
+    }
 
 
-  /* SHARE */
+    /*
+    GOOGLE MAPS
+    */
 
-  setupShare(
-    groom,
-    bride
-  );
+    if (data.maps) {
 
+      const mapsButton =
+        document.getElementById(
+          "mapsButton"
+        );
 
-  /* TAMPILKAN */
+      mapsButton.href =
+        data.maps;
 
-  loading.style.display =
-    "none";
+      mapsButton.style.display =
+        "inline-block";
 
-  errorBox.style.display =
-    "none";
-
-  app.style.display =
-    "block";
-
-  document.body.classList.add(
-    "locked"
-  );
+    }
 
 
-  console.log(
-    "UNDANGAN BERHASIL DIMUAT!"
-  );
+    /*
+    FOTO COVER
+    */
 
-}
+    if (data.image) {
 
+      document
+        .getElementById(
+          "cover"
+        )
+        .style.backgroundImage =
+        `linear-gradient(
+          rgba(30,15,20,.48),
+          rgba(30,15,20,.58)
+        ),url("${data.image}")`;
 
-/* WHATSAPP */
-
-function setupWhatsApp(
-  groom,
-  bride,
-  data
-) {
-
-  const url =
-    window.location.href;
-
-
-  const message =
-`💍 UNDANGAN PERNIKAHAN
-
-Assalamu'alaikum Wr. Wb.
-
-Dengan penuh kebahagiaan,
-kami mengundang Bapak/Ibu/Saudara/i
-untuk hadir dalam acara pernikahan:
-
-💐 ${groom} & ${bride}
-
-📅 ${
-  data.eventDate
-  ? formatDate(data.eventDate)
-  : "-"
-}
-
-🕐 ${data.eventTime || "-"}
-
-📍 ${data.location || "-"}
-
-💌 Buka undangan:
-${url}
-
-Merupakan suatu kehormatan
-bagi kami apabila berkenan hadir
-dan memberikan doa restu.
-
-Terima kasih ❤️`;
+    }
 
 
-  const waButton =
+    /*
+    TEMA
+    */
+
+    if (data.theme === "dark") {
+
+      document.body.classList.add(
+        "theme-dark"
+      );
+
+    }
+
+    if (data.theme === "sage") {
+
+      document.body.classList.add(
+        "theme-sage"
+      );
+
+    }
+
+
+    /*
+    MUSIK
+    */
+
+    if (data.music) {
+
+      const music =
+        document.getElementById(
+          "music"
+        );
+
+      music.src =
+        data.music;
+
+    }
+
+
+    /*
+    SHARE WHATSAPP
+    */
+
+    const currentUrl =
+      window.location.href;
+
+
+    const shareText =
+      `💌 Undangan Pernikahan ${groom} & ${bride}
+
+Dengan penuh kebahagiaan, kami mengundang Anda untuk hadir dalam acara pernikahan kami.
+
+📅 ${data.eventDate ? formatDate(data.eventDate) : ""}
+📍 ${data.location || ""}
+
+🔗 Buka undangan:
+${currentUrl}`;
+
+
     document.getElementById(
       "waButton"
+    ).href =
+      "https://wa.me/?text=" +
+      encodeURIComponent(
+        shareText
+      );
+
+
+    /*
+    TOMBOL SHARE
+    */
+
+    document
+      .getElementById(
+        "shareButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          if (
+            navigator.share
+          ) {
+
+            try {
+
+              await navigator.share({
+                title:
+                  `Undangan ${groom} & ${bride}`,
+
+                text:
+                  shareText,
+
+                url:
+                  currentUrl
+              });
+
+            } catch (e) {}
+
+          } else {
+
+            try {
+
+              await navigator.clipboard.writeText(
+                currentUrl
+              );
+
+              alert(
+                "Link undangan berhasil disalin."
+              );
+
+            } catch (e) {
+
+              prompt(
+                "Salin link undangan:",
+                currentUrl
+              );
+
+            }
+
+          }
+
+        }
+      );
+
+
+    /*
+    TAMPILKAN
+    */
+
+    loading.style.display =
+      "none";
+
+    errorBox.style.display =
+      "none";
+
+    app.style.display =
+      "block";
+
+    document.body.classList.add(
+      "locked"
+    );
+
+  }
+
+
+  /*
+  =====================================
+  BUKA UNDANGAN
+  =====================================
+  */
+
+  document
+    .getElementById(
+      "openButton"
+    )
+    .addEventListener(
+      "click",
+      () => {
+
+        document.body.classList.remove(
+          "locked"
+        );
+
+        document
+          .getElementById(
+            "mainContent"
+          )
+          .scrollIntoView({
+            behavior: "smooth"
+          });
+
+      }
     );
 
 
-  waButton.href =
-    "https://wa.me/?text=" +
-    encodeURIComponent(
-      message
-    );
+  /*
+  =====================================
+  MUSIC
+  =====================================
+  */
 
-}
-
-
-/* SHARE */
-
-function setupShare(
-  groom,
-  bride
-) {
-
-  const shareButton =
+  const musicButton =
     document.getElementById(
-      "shareButton"
+      "musicButton"
+    );
+
+  const music =
+    document.getElementById(
+      "music"
     );
 
 
-  shareButton.addEventListener(
+  musicButton.addEventListener(
     "click",
-    async function() {
+    async () => {
 
-      const shareData = {
+      if (
+        music.paused
+      ) {
 
-        title:
-          `Undangan ${groom} & ${bride}`,
+        try {
 
-        text:
-          `💍 Undangan Pernikahan ${groom} & ${bride}`,
+          await music.play();
 
-        url:
-          window.location.href
+          musicButton.textContent =
+            "🎵";
 
-      };
-
-
-      try {
-
-        if (
-          navigator.share
-        ) {
-
-          await navigator.share(
-            shareData
-          );
-
-        } else {
-
-          await navigator.clipboard
-            .writeText(
-              window.location.href
-            );
+        } catch (error) {
 
           alert(
-            "Link undangan berhasil disalin."
+            "Musik belum tersedia."
           );
 
         }
 
-      } catch(error) {
+      } else {
 
-        console.log(
-          "Share dibatalkan."
-        );
+        music.pause();
+
+        musicButton.textContent =
+          "🔇";
 
       }
 
     }
   );
 
-}
 
+  /*
+  =====================================
+  HELPER
+  =====================================
+  */
 
-/* BUKA UNDANGAN */
-
-document
-  .getElementById(
-    "openButton"
-  )
-  .addEventListener(
-    "click",
-    function() {
-
-      document.body
-        .classList
-        .remove(
-          "locked"
-        );
-
-
-      document
-        .getElementById(
-          "mainContent"
-        )
-        .scrollIntoView({
-          behavior:
-            "smooth"
-        });
-
-    }
-  );
-
-
-/* SET TEXT */
-
-function setText(
-  id,
-  value
-) {
-
-  const element =
-    document.getElementById(
-      id
-    );
-
-
-  if (element) {
-
-    element.textContent =
-      value || "";
-
-  }
-
-}
-
-
-/* FORMAT TANGGAL */
-
-function formatDate(
-  value
-) {
-
-  const date =
-    new Date(
-      value +
-      "T00:00:00"
-    );
-
-
-  if (
-    isNaN(
-      date.getTime()
-    )
+  function setText(
+    id,
+    value
   ) {
 
-    return value;
+    const element =
+      document.getElementById(id);
+
+    if (element) {
+
+      element.textContent =
+        value || "";
+
+    }
 
   }
 
 
-  return date.toLocaleDateString(
-    "id-ID",
-    {
-      weekday:
-        "long",
+  function formatDate(
+    value
+  ) {
 
-      day:
-        "numeric",
-
-      month:
-        "long",
-
-      year:
-        "numeric"
-    }
-  );
-
-}
+    const date =
+      new Date(
+        value +
+        "T00:00:00"
+      );
 
 
-/* ERROR */
+    return date.toLocaleDateString(
+      "id-ID",
+      {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }
+    );
 
-function showError(
-  message
-) {
+  }
 
-  loading.style.display =
-    "none";
 
-  app.style.display =
-    "none";
+  function showError(
+    message
+  ) {
 
-  errorBox.style.display =
-    "flex";
+    loading.style.display =
+      "none";
 
-  errorMessage.textContent =
-    message;
+    app.style.display =
+      "none";
 
-}
+    errorBox.style.display =
+      "flex";
+
+    errorMessage.textContent =
+      message;
+
+  }
 
 </script>
 
