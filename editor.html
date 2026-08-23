@@ -1,1334 +1,1761 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Buat Undangan — UndanganKu</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff7f9;
-      color: #35282d;
-    }
-
-    header {
-      height: 70px;
-      background: white;
-      border-bottom: 1px solid #efdce2;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 5%;
-
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .logo {
-      color: #b65b77;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .back {
-      color: #b65b77;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .container {
-      width: min(950px, 92%);
-      margin: 30px auto 60px;
-    }
-
-    .title {
-      margin-bottom: 25px;
-    }
-
-    .title small {
-      color: #b65b77;
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
-
-    .title h1 {
-      font-family: Georgia, serif;
-      font-size: 42px;
-      margin: 8px 0;
-    }
-
-    .title p {
-      color: #806b72;
-      line-height: 1.6;
-    }
-
-    .card {
-      background: white;
-      border: 1px solid #efdce2;
-      border-radius: 22px;
-      padding: 28px;
-      margin-bottom: 20px;
-
-      box-shadow: 0 12px 40px rgba(100,50,70,.06);
-    }
-
-    .card h2 {
-      font-family: Georgia, serif;
-      margin-bottom: 20px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .full {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
-      font-size: 14px;
-      color: #4e3b42;
-    }
-
-    input,
-    textarea,
-    select {
-      width: 100%;
-
-      margin-top: 8px;
-
-      border: 1px solid #e4cfd6;
-
-      border-radius: 12px;
-
-      padding: 13px;
-
-      background: white;
-
-      font-family: inherit;
-      font-size: 15px;
-
-      outline: none;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus {
-      border-color: #b65b77;
-      box-shadow: 0 0 0 3px #b65b7712;
-    }
-
-    .hint {
-      display: block;
-      margin-top: 6px;
-      color: #907b82;
-      font-size: 12px;
-      font-weight: normal;
-    }
-
-    .slug-box {
-      display: flex;
-      align-items: center;
-      gap: 0;
-
-      margin-top: 8px;
-    }
-
-    .slug-prefix {
-      background: #f7edf0;
-      color: #806b72;
-
-      padding: 13px 10px;
-
-      border: 1px solid #e4cfd6;
-      border-right: 0;
-
-      border-radius: 12px 0 0 12px;
-
-      font-size: 13px;
-
-      white-space: nowrap;
-    }
-
-    .slug-input {
-      margin-top: 0;
-      border-radius: 0 12px 12px 0;
-    }
-
-    .theme-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 10px;
-    }
-
-    .theme-option {
-      border: 2px solid #ead9de;
-      border-radius: 16px;
-      padding: 10px;
-      cursor: pointer;
-      text-align: center;
-    }
-
-    .theme-option.active {
-      border-color: #b65b77;
-      background: #fff3f6;
-    }
-
-    .theme-preview {
-      height: 80px;
-      border-radius: 11px;
-      margin-bottom: 8px;
-    }
-
-    .rose {
-      background: linear-gradient(135deg, #f8ccd8, #9e536c);
-    }
-
-    .dark {
-      background: linear-gradient(135deg, #252124, #9c7747);
-    }
-
-    .sage {
-      background: linear-gradient(135deg, #dbe5d5, #66816d);
-    }
-
-    .theme-option span {
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .preview {
-      margin-top: 15px;
-
-      border-radius: 18px;
-
-      min-height: 330px;
-
-      padding: 35px 20px;
-
-      color: white;
-
-      text-align: center;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      background:
-        linear-gradient(#0005,#0005),
-        linear-gradient(135deg,#f8ccd8,#9e536c);
-
-      background-size: cover;
-      background-position: center;
-    }
-
-    .preview small {
-      letter-spacing: 3px;
-    }
-
-    .preview h3 {
-      font-family: Georgia, serif;
-      font-size: 40px;
-      line-height: .9;
-      margin: 25px 0;
-    }
-
-    .save-area {
-      position: sticky;
-      bottom: 15px;
-
-      background: rgba(255,255,255,.92);
-
-      backdrop-filter: blur(10px);
-
-      border: 1px solid #efdce2;
-
-      border-radius: 18px;
-
-      padding: 15px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 15px;
-
-      box-shadow: 0 10px 35px rgba(100,50,70,.12);
-    }
-
-    #message {
-      font-size: 14px;
-      color: #806b72;
-    }
-
-    .save-btn {
-      border: 0;
-
-      background: #b65b77;
-      color: white;
-
-      padding: 14px 25px;
-
-      border-radius: 12px;
-
-      font-weight: bold;
-
-      cursor: pointer;
-    }
-
-    .save-btn:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
-
-    .danger {
-      color: #b33b4d;
-      font-size: 12px;
-      margin-top: 8px;
-    }
-
-    @media(max-width:700px) {
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .full {
-        grid-column: auto;
-      }
-
-      .theme-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .slug-prefix {
-        font-size: 11px;
-      }
-
-      .title h1 {
-        font-size: 34px;
-      }
-
-      .save-area {
-        display: block;
-      }
-
-      .save-btn {
-        width: 100%;
-        margin-top: 10px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Buat Undangan — UndanganKu</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#fff7f9;
+  color:#35282d;
+}
+
+header{
+  height:70px;
+  background:white;
+  border-bottom:1px solid #efdce2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.logo{
+  color:#b65b77;
+  font-size:20px;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+.back{
+  color:#b65b77;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:14px;
+}
+
+.container{
+  width:min(950px,92%);
+  margin:30px auto 60px;
+}
+
+.title{
+  margin-bottom:25px;
+}
+
+.title small{
+  color:#b65b77;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+
+.title h1{
+  font-family:Georgia,serif;
+  font-size:42px;
+  margin:8px 0;
+}
+
+.title p{
+  color:#806b72;
+  line-height:1.6;
+}
+
+.card{
+  background:white;
+  border:1px solid #efdce2;
+  border-radius:22px;
+  padding:28px;
+  margin-bottom:20px;
+  box-shadow:0 12px 40px rgba(100,50,70,.06);
+}
+
+.card h2{
+  font-family:Georgia,serif;
+  margin-bottom:20px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+label{
+  display:block;
+  font-weight:bold;
+  font-size:14px;
+  color:#4e3b42;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  margin-top:8px;
+  border:1px solid #e4cfd6;
+  border-radius:12px;
+  padding:13px;
+  background:white;
+  font-family:inherit;
+  font-size:15px;
+  outline:none;
+}
+
+textarea{
+  resize:vertical;
+  min-height:120px;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:#b65b77;
+  box-shadow:0 0 0 3px #b65b7712;
+}
+
+.hint{
+  display:block;
+  margin-top:6px;
+  color:#907b82;
+  font-size:12px;
+  font-weight:normal;
+}
+
+.slug-box{
+  display:flex;
+  margin-top:8px;
+}
+
+.slug-prefix{
+  background:#f7edf0;
+  color:#806b72;
+  padding:13px 10px;
+  border:1px solid #e4cfd6;
+  border-right:0;
+  border-radius:12px 0 0 12px;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+.slug-input{
+  margin-top:0;
+  border-radius:0 12px 12px 0;
+}
+
+.theme-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.theme-option{
+  border:2px solid #ead9de;
+  border-radius:16px;
+  padding:10px;
+  cursor:pointer;
+  text-align:center;
+}
+
+.theme-option.active{
+  border-color:#b65b77;
+  background:#fff3f6;
+}
+
+.theme-preview{
+  height:80px;
+  border-radius:11px;
+  margin-bottom:8px;
+}
+
+.rose{
+  background:linear-gradient(135deg,#f8ccd8,#9e536c);
+}
+
+.dark{
+  background:linear-gradient(135deg,#252124,#9c7747);
+}
+
+.sage{
+  background:linear-gradient(135deg,#dbe5d5,#66816d);
+}
+
+.theme-option span{
+  font-size:13px;
+  font-weight:bold;
+}
+
+.religion-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:10px;
+}
+
+.religion-option{
+  border:2px solid #ead9de;
+  border-radius:16px;
+  padding:16px 10px;
+  cursor:pointer;
+  text-align:center;
+  background:white;
+  transition:.2s;
+}
+
+.religion-option:hover{
+  transform:translateY(-2px);
+}
+
+.religion-option.active{
+  border-color:#b65b77;
+  background:#fff3f6;
+}
+
+.religion-icon{
+  font-size:30px;
+  display:block;
+  margin-bottom:7px;
+}
+
+.religion-name{
+  font-size:13px;
+  font-weight:bold;
+}
+
+.quote-box{
+  margin-top:18px;
+  padding:20px;
+  background:#fff7f9;
+  border:1px solid #efdce2;
+  border-radius:16px;
+}
+
+.quote-box strong{
+  color:#b65b77;
+  font-size:16px;
+}
+
+.quote-text{
+  margin-top:12px;
+  line-height:1.8;
+  color:#66545b;
+  white-space:pre-line;
+}
+
+.quote-source{
+  margin-top:12px;
+  font-size:12px;
+  color:#907b82;
+}
+
+.preview{
+  margin-top:15px;
+  border-radius:18px;
+  min-height:330px;
+  padding:35px 20px;
+  color:white;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:
+    linear-gradient(#0005,#0005),
+    linear-gradient(135deg,#f8ccd8,#9e536c);
+  background-size:cover;
+  background-position:center;
+}
+
+.preview small{
+  letter-spacing:3px;
+}
+
+.preview h3{
+  font-family:Georgia,serif;
+  font-size:40px;
+  line-height:.9;
+  margin:25px 0;
+}
+
+.save-area{
+  position:sticky;
+  bottom:15px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(10px);
+  border:1px solid #efdce2;
+  border-radius:18px;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  box-shadow:0 10px 35px rgba(100,50,70,.12);
+}
+
+#message{
+  font-size:14px;
+  color:#806b72;
+}
+
+.save-btn{
+  border:0;
+  background:#b65b77;
+  color:white;
+  padding:14px 25px;
+  border-radius:12px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.save-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.danger{
+  color:#b33b4d;
+  font-size:12px;
+  margin-top:8px;
+}
+
+@media(max-width:700px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:auto;
+  }
+
+  .theme-grid,
+  .religion-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .title h1{
+    font-size:34px;
+  }
+
+  .save-area{
+    display:block;
+  }
+
+  .save-btn{
+    width:100%;
+    margin-top:10px;
+  }
+}
+
+@media(max-width:450px){
+
+  .religion-grid{
+    grid-template-columns:1fr;
+  }
+
+  .card{
+    padding:20px;
+  }
+
+  .slug-prefix{
+    font-size:11px;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <header>
 
-  <a href="dashboard.html" class="logo">
-    💍 UndanganKu
-  </a>
+<a href="dashboard.html" class="logo">
+💍 UndanganKu
+</a>
 
-  <a href="dashboard.html" class="back">
-    ← Dashboard
-  </a>
+<a href="dashboard.html" class="back">
+← Dashboard
+</a>
 
 </header>
 
 
 <main class="container">
 
+<div class="title">
 
-  <!-- TITLE -->
+<small>EDITOR UNDANGAN</small>
 
-  <div class="title">
+<h1>Buat Undanganmu 💍</h1>
 
-    <small>
-      EDITOR UNDANGAN
-    </small>
+<p>
+Isi data di bawah. Pilih agama dan ucapan yang sesuai,
+kemudian simpan untuk menerbitkan undangan.
+</p>
 
-    <h1>
-      Buat Undanganmu 💍
-    </h1>
+</div>
 
-    <p>
-      Isi data di bawah. Setelah disimpan,
-      undangan akan otomatis dibuat.
-    </p>
 
-  </div>
+<form id="invitationForm">
 
 
-  <form id="invitationForm">
+<!-- MEMPELAI -->
 
+<section class="card">
 
-    <!-- MEMPELAI -->
+<h2>💑 Data Mempelai</h2>
 
-    <section class="card">
+<div class="grid">
 
-      <h2>
-        💑 Data Mempelai
-      </h2>
+<label>
+Nama Mempelai Pria
+<input
+type="text"
+id="groomName"
+placeholder="Contoh: Muhajir"
+required>
+</label>
 
-      <div class="grid">
+<label>
+Nama Mempelai Wanita
+<input
+type="text"
+id="brideName"
+placeholder="Contoh: Siti"
+required>
+</label>
 
-        <label>
+<label>
+Nama Panggilan Pria
+<input
+type="text"
+id="groomNick"
+placeholder="Contoh: Jir">
+</label>
 
-          Nama Mempelai Pria
+<label>
+Nama Panggilan Wanita
+<input
+type="text"
+id="brideNick"
+placeholder="Contoh: Siti">
+</label>
 
-          <input
-            type="text"
-            id="groomName"
-            placeholder="Contoh: Muhajir"
-            required
-          >
+<label class="full">
 
-        </label>
+Foto Cover
 
+<input
+type="url"
+id="image"
+placeholder="https://contoh.com/foto.jpg">
 
-        <label>
+<span class="hint">
+Gunakan link gambar online.
+</span>
 
-          Nama Mempelai Wanita
+</label>
 
-          <input
-            type="text"
-            id="brideName"
-            placeholder="Contoh: Siti"
-            required
-          >
+</div>
 
-        </label>
+</section>
 
 
-        <label>
+<!-- ACARA -->
 
-          Nama Panggilan Pria
+<section class="card">
 
-          <input
-            type="text"
-            id="groomNick"
-            placeholder="Contoh: Jir"
-          >
+<h2>📅 Detail Acara</h2>
 
-        </label>
+<div class="grid">
 
+<label>
+Tanggal Acara
 
-        <label>
+<input
+type="date"
+id="eventDate"
+required>
+</label>
 
-          Nama Panggilan Wanita
+<label>
+Jam Acara
 
-          <input
-            type="text"
-            id="brideNick"
-            placeholder="Contoh: Siti"
-          >
+<input
+type="time"
+id="eventTime">
+</label>
 
-        </label>
+<label class="full">
+Lokasi Acara
 
+<input
+type="text"
+id="location"
+placeholder="Gedung / Rumah / Hotel"
+required>
+</label>
 
-        <label class="full">
+<label class="full">
+Google Maps
 
-          Foto Cover
+<input
+type="url"
+id="maps"
+placeholder="https://maps.google.com/...">
 
-          <input
-            type="url"
-            id="image"
-            placeholder="https://contoh.com/foto.jpg"
-          >
+<span class="hint">
+Tempel link Google Maps lokasi acara.
+</span>
 
-          <span class="hint">
-            Untuk sementara gunakan link gambar online.
-          </span>
+</label>
 
-        </label>
+</div>
 
-      </div>
+</section>
 
-    </section>
 
+<!-- KELUARGA -->
 
-    <!-- ACARA -->
+<section class="card">
 
-    <section class="card">
+<h2>👨‍👩‍👧 Keluarga</h2>
 
-      <h2>
-        📅 Detail Acara
-      </h2>
+<label>
 
-      <div class="grid">
+Nama Orang Tua / Keluarga
 
-        <label>
-
-          Tanggal Acara
-
-          <input
-            type="date"
-            id="eventDate"
-            required
-          >
-
-        </label>
-
-
-        <label>
-
-          Jam Acara
-
-          <input
-            type="time"
-            id="eventTime"
-          >
-
-        </label>
-
-
-        <label class="full">
-
-          Lokasi Acara
-
-          <input
-            type="text"
-            id="location"
-            placeholder="Gedung / Rumah / Hotel"
-            required
-          >
-
-        </label>
-
-
-        <label class="full">
-
-          Google Maps
-
-          <input
-            type="url"
-            id="maps"
-            placeholder="https://maps.google.com/..."
-          >
-
-          <span class="hint">
-            Tempel link Google Maps lokasi acara.
-          </span>
-
-        </label>
-
-      </div>
-
-    </section>
-
-
-    <!-- KELUARGA -->
-
-    <section class="card">
-
-      <h2>
-        👨‍👩‍👧 Keluarga
-      </h2>
-
-      <label>
-
-        Nama Orang Tua / Keluarga
-
-        <textarea
-          id="parents"
-          placeholder="Contoh:
+<textarea
+id="parents"
+placeholder="Contoh:
 
 Bapak Ahmad & Ibu Siti
-Bapak Budi & Ibu Aminah"
-        ></textarea>
+Bapak Budi & Ibu Aminah"></textarea>
 
-      </label>
+</label>
 
-    </section>
+</section>
 
 
-    <!-- CERITA -->
+<!-- CERITA -->
 
-    <section class="card">
+<section class="card">
 
-      <h2>
-        ❤️ Cerita Cinta
-      </h2>
+<h2>❤️ Cerita Cinta</h2>
 
-      <label>
+<label>
 
-        Cerita Pernikahan
+Cerita Pernikahan
 
-        <textarea
-          id="story"
-          placeholder="Ceritakan perjalanan cinta kalian..."
-        ></textarea>
+<textarea
+id="story"
+placeholder="Ceritakan perjalanan cinta kalian..."></textarea>
 
-      </label>
+</label>
 
+<br>
 
-      <br>
+<label>
 
+Kata Pembuka
 
-      <label>
+<textarea
+id="opening"
+placeholder="Dengan penuh rasa syukur..."></textarea>
 
-        Kata Pembuka
+</label>
 
-        <textarea
-          id="opening"
-          placeholder="Dengan penuh rasa syukur..."
-        ></textarea>
+</section>
 
-      </label>
 
-    </section>
+<!-- AGAMA -->
 
+<section class="card">
 
-    <!-- TEMA -->
+<h2>🙏 Agama & Ucapan</h2>
 
-    <section class="card">
+<p class="hint">
+Pilih agama terlebih dahulu. Pilihan ucapan dan doa akan
+menyesuaikan agama yang dipilih.
+</p>
 
-      <h2>
-        🎨 Pilih Tema
-      </h2>
 
-      <input
-        type="hidden"
-        id="theme"
-        value="rose"
-      >
+<div class="religion-grid">
 
+<div
+class="religion-option active"
+data-religion="islam">
 
-      <div class="theme-grid">
+<span class="religion-icon">☪️</span>
 
-        <div
-          class="theme-option active"
-          data-theme="rose"
-        >
+<span class="religion-name">
+Islam
+</span>
 
-          <div class="theme-preview rose"></div>
+</div>
 
-          <span>
-            Rose Elegant
-          </span>
 
-        </div>
+<div
+class="religion-option"
+data-religion="kristen">
 
+<span class="religion-icon">✝️</span>
 
-        <div
-          class="theme-option"
-          data-theme="dark"
-        >
+<span class="religion-name">
+Kristen Protestan
+</span>
 
-          <div class="theme-preview dark"></div>
+</div>
 
-          <span>
-            Dark Gold
-          </span>
 
-        </div>
+<div
+class="religion-option"
+data-religion="katolik">
 
+<span class="religion-icon">✝️</span>
 
-        <div
-          class="theme-option"
-          data-theme="sage"
-        >
+<span class="religion-name">
+Katolik
+</span>
 
-          <div class="theme-preview sage"></div>
+</div>
 
-          <span>
-            Sage Romantic
-          </span>
 
-        </div>
+<div
+class="religion-option"
+data-religion="hindu">
 
-      </div>
+<span class="religion-icon">🕉️</span>
 
-    </section>
+<span class="religion-name">
+Hindu
+</span>
 
+</div>
 
-    <!-- LINK -->
 
-    <section class="card">
+<div
+class="religion-option"
+data-religion="buddha">
 
-      <h2>
-        🔗 Link Undangan
-      </h2>
+<span class="religion-icon">☸️</span>
 
-      <label>
+<span class="religion-name">
+Buddha
+</span>
 
-        Nama Link
+</div>
 
-        <div class="slug-box">
 
-          <span class="slug-prefix">
-            Undanganmu/
-          </span>
+<div
+class="religion-option"
+data-religion="konghucu">
 
-          <input
-            class="slug-input"
-            type="text"
-            id="slug"
-            placeholder="muhajir-siti"
-            pattern="[a-z0-9-]+"
-            required
-          >
+<span class="religion-icon">🧧</span>
 
-        </div>
+<span class="religion-name">
+Konghucu
+</span>
 
-        <span class="hint">
-          Gunakan huruf kecil, angka, dan tanda minus.
-        </span>
+</div>
 
-        <span class="danger">
-          Contoh: muhajir-siti
-        </span>
 
-      </label>
+<div
+class="religion-option"
+data-religion="umum">
 
-    </section>
+<span class="religion-icon">🤍</span>
 
+<span class="religion-name">
+Umum
+</span>
 
-    <!-- PREVIEW -->
+</div>
 
-    <section class="card">
+</div>
 
-      <h2>
-        👁️ Preview
-      </h2>
 
-      <div
-        class="preview"
-        id="preview"
-      >
+<input
+type="hidden"
+id="religion"
+value="islam">
 
-        <small>
-          THE WEDDING OF
-        </small>
 
-        <h3>
+<label
+class="full"
+style="margin-top:20px;">
 
-          <span id="previewGroom">
-            Nama Pria
-          </span>
+📖 Pilih Ucapan / Doa
 
-          <br>
-          &
-          <br>
+<select id="religiousQuote"></select>
 
-          <span id="previewBride">
-            Nama Wanita
-          </span>
+</label>
 
-        </h3>
 
-        <p id="previewDate">
-          Tanggal Pernikahan
-        </p>
+<div
+class="quote-box"
+id="quotePreview">
 
-      </div>
+Memuat pilihan ucapan...
 
-    </section>
+</div>
 
+</section>
 
-    <!-- SAVE -->
 
-    <div class="save-area">
+<!-- TEMA -->
 
-      <span id="message">
-        Pastikan semua data sudah benar.
-      </span>
+<section class="card">
 
-      <button
-        class="save-btn"
-        id="saveButton"
-        type="submit"
-      >
-        ✨ Simpan & Publikasikan
-      </button>
+<h2>🎨 Pilih Tema</h2>
 
-    </div>
+<input
+type="hidden"
+id="theme"
+value="rose">
 
 
-  </form>
+<div class="theme-grid">
+
+<div
+class="theme-option active"
+data-theme="rose">
+
+<div class="theme-preview rose"></div>
+
+<span>Rose Elegant</span>
+
+</div>
+
+
+<div
+class="theme-option"
+data-theme="dark">
+
+<div class="theme-preview dark"></div>
+
+<span>Dark Gold</span>
+
+</div>
+
+
+<div
+class="theme-option"
+data-theme="sage">
+
+<div class="theme-preview sage"></div>
+
+<span>Sage Romantic</span>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- LINK -->
+
+<section class="card">
+
+<h2>🔗 Link Undangan</h2>
+
+<label>
+
+Nama Link
+
+<div class="slug-box">
+
+<span class="slug-prefix">
+Undanganmu/
+</span>
+
+<input
+class="slug-input"
+type="text"
+id="slug"
+placeholder="muhajir-siti"
+pattern="[a-z0-9-]+"
+required>
+
+</div>
+
+<span class="hint">
+Gunakan huruf kecil, angka, dan tanda minus.
+</span>
+
+<span class="danger">
+Contoh: muhajir-siti
+</span>
+
+</label>
+
+</section>
+
+
+<!-- PREVIEW -->
+
+<section class="card">
+
+<h2>👁️ Preview</h2>
+
+<div
+class="preview"
+id="preview">
+
+<small>
+THE WEDDING OF
+</small>
+
+<h3>
+
+<span id="previewGroom">
+Nama Pria
+</span>
+
+<br>
+&
+<br>
+
+<span id="previewBride">
+Nama Wanita
+</span>
+
+</h3>
+
+<p id="previewDate">
+Tanggal Pernikahan
+</p>
+
+</div>
+
+</section>
+
+
+<!-- SAVE -->
+
+<div class="save-area">
+
+<span id="message">
+Pastikan semua data sudah benar.
+</span>
+
+<button
+class="save-btn"
+id="saveButton"
+type="submit">
+
+✨ Simpan & Publikasikan
+
+</button>
+
+</div>
+
+</form>
 
 </main>
 
 
-
 <script type="module">
 
-  import {
+import {
 
-    auth,
-    db,
+auth,
+db,
+onAuthStateChanged,
+doc,
+getDoc,
+setDoc,
+serverTimestamp
+
+} from "./firebase.js";
+
+
+const form =
+document.getElementById("invitationForm");
+
+const message =
+document.getElementById("message");
+
+const saveButton =
+document.getElementById("saveButton");
 
-    onAuthStateChanged,
 
-    doc,
-    getDoc,
-    setDoc,
-    serverTimestamp
+let currentUser = null;
 
-  } from "./firebase.js";
+
+/* =================================
+   DATA UCAPAN
+================================= */
+
+const religiousQuotes = {
+
+islam: [
+
+{
+id:"islam-ar-rum-21",
+title:"QS. Ar-Rum: 21",
+text:
+"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan dari jenismu sendiri, supaya kamu merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.",
+source:"Al-Qur'an — QS. Ar-Rum: 21"
+},
+
+{
+id:"islam-doa",
+title:"Doa Keberkahan Pernikahan",
+text:
+"Semoga Allah memberikan keberkahan kepada kedua mempelai, menyatukan keduanya dalam kebaikan, dan menjadikan rumah tangga mereka penuh ketenteraman, kasih sayang, serta keberkahan.",
+source:"Doa pernikahan"
+},
+
+{
+id:"islam-formal",
+title:"Ucapan Islami Formal",
+text:
+"Dengan memohon ridha dan keberkahan Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu atas pernikahan kami.",
+source:"Ucapan Islami"
+}
+
+],
+
+
+kristen: [
+
+{
+id:"kristen-1korintus",
+title:"1 Korintus 13:4–7",
+text:
+"Kasih itu sabar; kasih itu murah hati; kasih tidak memegahkan diri dan tidak sombong. Kasih tidak berkesudahan.",
+source:"Alkitab — 1 Korintus 13:4–7"
+},
+
+{
+id:"kristen-doa",
+title:"Doa Pernikahan Kristen",
+text:
+"Kiranya Tuhan menyertai perjalanan rumah tangga kami, memberikan kasih, kesetiaan, damai sejahtera, dan kekuatan dalam menjalani kehidupan bersama.",
+source:"Doa pernikahan Kristen"
+},
+
+{
+id:"kristen-formal",
+title:"Ucapan Kristen Formal",
+text:
+"Dengan penuh sukacita dan ucapan syukur kepada Tuhan, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu atas pernikahan kami.",
+source:"Ucapan Kristen"
+}
+
+],
+
+
+katolik: [
+
+{
+id:"katolik-markus-10-9",
+title:"Markus 10:9",
+text:
+"Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia.",
+source:"Alkitab — Markus 10:9"
+},
+
+{
+id:"katolik-1korintus",
+title:"1 Korintus 13",
+text:
+"Kasih itu sabar dan murah hati. Kasih tidak berkesudahan.",
+source:"Alkitab — 1 Korintus 13"
+},
+
+{
+id:"katolik-doa",
+title:"Doa Pernikahan Katolik",
+text:
+"Semoga Tuhan memberkati keluarga baru kami dengan kasih, kesetiaan, kedamaian, dan kebahagiaan dalam menjalani kehidupan bersama.",
+source:"Doa pernikahan Katolik"
+}
+
+],
+
+
+hindu: [
 
+{
+id:"hindu-harmonis",
+title:"Doa Keharmonisan",
+text:
+"Semoga kehidupan rumah tangga dipenuhi keharmonisan, kasih sayang, kesetiaan, kedamaian, dan kebajikan.",
+source:"Doa/harapan keharmonisan"
+},
 
-  const form =
-    document.getElementById(
-      "invitationForm"
-    );
+{
+id:"hindu-formal",
+title:"Ucapan Pernikahan Hindu",
+text:
+"Dengan penuh rasa syukur, kami memohon doa restu agar perjalanan kehidupan berumah tangga senantiasa diliputi keharmonisan, kedamaian, dan kebajikan.",
+source:"Ucapan pernikahan Hindu"
+}
 
-  const message =
-    document.getElementById(
-      "message"
-    );
+],
 
-  const saveButton =
-    document.getElementById(
-      "saveButton"
-    );
 
+buddha: [
 
-  let currentUser = null;
+{
+id:"buddha-metta",
+title:"Cinta Kasih (Metta)",
+text:
+"Semoga cinta kasih, kedamaian, kebahagiaan, dan kebajikan senantiasa menyertai kehidupan rumah tangga kami.",
+source:"Harapan cinta kasih"
+},
 
+{
+id:"buddha-formal",
+title:"Ucapan Pernikahan Buddhis",
+text:
+"Semoga kehidupan bersama senantiasa dilandasi cinta kasih, kesetiaan, pengertian, kebijaksanaan, dan kedamaian.",
+source:"Ucapan pernikahan Buddhis"
+}
 
-  /*
-  ==========================================
-  CEK LOGIN
-  ==========================================
-  */
+],
 
-  onAuthStateChanged(
-    auth,
-    async (user) => {
 
-      if (!user) {
+konghucu: [
 
-        window.location.href =
-          "login.html";
+{
+id:"konghucu-harmonis",
+title:"Keharmonisan Keluarga",
+text:
+"Semoga keluarga yang dibangun senantiasa dipenuhi keharmonisan, kebajikan, kasih sayang, saling menghormati, dan kedamaian.",
+source:"Harapan keharmonisan keluarga"
+},
 
-        return;
+{
+id:"konghucu-formal",
+title:"Ucapan Pernikahan Konghucu",
+text:
+"Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i untuk memberikan doa dan restu bagi kehidupan rumah tangga kami.",
+source:"Ucapan pernikahan Konghucu"
+}
 
-      }
+],
 
 
-      currentUser = user;
+umum: [
 
+{
+id:"umum-formal",
+title:"Ucapan Formal",
+text:
+"Dengan penuh kebahagiaan, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa serta restu atas pernikahan kami.",
+source:"Ucapan umum"
+},
 
-      await loadExistingInvitation(
-        user.uid
-      );
+{
+id:"umum-romantis",
+title:"Ucapan Romantis",
+text:
+"Hari istimewa ini menjadi awal perjalanan baru bagi kami. Kehadiran dan doa restu Anda akan menjadi kebahagiaan yang sangat berarti bagi kami.",
+source:"Ucapan romantis"
+}
 
-    }
-  );
+]
 
+};
 
-  /*
-  ==========================================
-  LOAD DATA LAMA
-  ==========================================
-  */
 
-  async function loadExistingInvitation(
-    uid
-  ) {
+/* =================================
+   AGAMA
+================================= */
 
-    try {
+const religionSelect =
+document.getElementById("religion");
 
-      const ref =
-        doc(
-          db,
-          "invitations",
-          uid
-        );
+const quoteSelect =
+document.getElementById("religiousQuote");
 
+const quotePreview =
+document.getElementById("quotePreview");
 
-      const snapshot =
-        await getDoc(ref);
 
+document
+.querySelectorAll(".religion-option")
+.forEach(option => {
 
-      if (!snapshot.exists()) {
+option.addEventListener("click",() => {
 
-        return;
+const religion =
+option.dataset.religion;
 
-      }
+selectReligion(religion);
 
+});
 
-      const data =
-        snapshot.data();
+});
 
 
-      const fields = [
+function selectReligion(religion){
 
-        "groomName",
-        "brideName",
-        "groomNick",
-        "brideNick",
-        "image",
-        "eventDate",
-        "eventTime",
-        "location",
-        "maps",
-        "parents",
-        "story",
-        "opening",
-        "theme",
-        "slug"
+religionSelect.value =
+religion;
 
-      ];
+document
+.querySelectorAll(".religion-option")
+.forEach(option => {
 
+option.classList.toggle(
+"active",
+option.dataset.religion === religion
+);
 
-      fields.forEach(
-        (field) => {
+});
 
-          const element =
-            document.getElementById(
-              field
-            );
+loadReligiousQuotes(religion);
 
+}
 
-          if (
-            element &&
-            data[field] !== undefined
-          ) {
 
-            element.value =
-              data[field];
+function loadReligiousQuotes(
+religion,
+selectedId=""
+){
 
-          }
+const quotes =
+religiousQuotes[religion] ||
+religiousQuotes.umum;
 
-        }
-      );
+quoteSelect.innerHTML = "";
 
+quotes.forEach(quote => {
 
-      selectTheme(
-        data.theme || "rose"
-      );
+const option =
+document.createElement("option");
 
+option.value =
+quote.id;
 
-      updatePreview();
+option.textContent =
+quote.title;
 
-    } catch(error) {
+quoteSelect.appendChild(option);
 
-      console.error(error);
+});
 
-    }
 
-  }
+if(selectedId){
 
+const exists =
+quotes.some(
+q => q.id === selectedId
+);
 
-  /*
-  ==========================================
-  PILIH TEMA
-  ==========================================
-  */
+if(exists){
 
-  document
-    .querySelectorAll(
-      ".theme-option"
-    )
-    .forEach(
-      option => {
+quoteSelect.value =
+selectedId;
 
-        option.addEventListener(
-          "click",
-          () => {
+}
 
-            selectTheme(
-              option.dataset.theme
-            );
+}
 
-          }
-        );
+updateQuotePreview();
 
-      }
-    );
+}
 
 
-  function selectTheme(theme) {
+function getSelectedQuote(){
 
-    document.getElementById(
-      "theme"
-    ).value = theme;
+const religion =
+religionSelect.value;
 
+const quotes =
+religiousQuotes[religion] ||
+religiousQuotes.umum;
 
-    document
-      .querySelectorAll(
-        ".theme-option"
-      )
-      .forEach(
-        option => {
+return quotes.find(
+q => q.id === quoteSelect.value
+);
 
-          option.classList.toggle(
-            "active",
-            option.dataset.theme ===
-            theme
-          );
+}
 
-        }
-      );
 
+function updateQuotePreview(){
 
-    updatePreview();
+const quote =
+getSelectedQuote();
 
-  }
+if(!quote){
 
+quotePreview.innerHTML =
+"Silakan pilih ucapan.";
 
-  /*
-  ==========================================
-  PREVIEW REAL TIME
-  ==========================================
-  */
+return;
 
-  document
-    .querySelectorAll(
-      "input, textarea"
-    )
-    .forEach(
-      input => {
+}
 
-        input.addEventListener(
-          "input",
-          updatePreview
-        );
+quotePreview.innerHTML = `
 
-      }
-    );
+<strong>
+${quote.title}
+</strong>
 
+<div class="quote-text">
+“${quote.text}”
+</div>
 
-  function updatePreview() {
+<div class="quote-source">
+${quote.source}
+</div>
 
-    const groom =
-      document.getElementById(
-        "groomName"
-      ).value ||
-      "Nama Pria";
+`;
 
+}
 
-    const bride =
-      document.getElementById(
-        "brideName"
-      ).value ||
-      "Nama Wanita";
 
+quoteSelect.addEventListener(
+"change",
+updateQuotePreview
+);
 
-    const date =
-      document.getElementById(
-        "eventDate"
-      ).value;
 
+loadReligiousQuotes("islam");
 
-    document.getElementById(
-      "previewGroom"
-    ).textContent = groom;
 
+/* =================================
+   CEK LOGIN
+================================= */
 
-    document.getElementById(
-      "previewBride"
-    ).textContent = bride;
+onAuthStateChanged(
+auth,
+async user => {
 
+if(!user){
 
-    document.getElementById(
-      "previewDate"
-    ).textContent =
-      date
-        ? formatDate(date)
-        : "Tanggal Pernikahan";
+window.location.href =
+"login.html";
 
+return;
 
-    const image =
-      document.getElementById(
-        "image"
-      ).value;
+}
 
+currentUser =
+user;
 
-    const preview =
-      document.getElementById(
-        "preview"
-      );
+await loadExistingInvitation(
+user.uid
+);
 
+}
+);
 
-    if (image) {
 
-      preview.style.backgroundImage =
-        `linear-gradient(#0005,#0005),
-         url("${image}")`;
+/* =================================
+   LOAD DATA
+================================= */
 
-    } else {
+async function loadExistingInvitation(uid){
 
-      preview.style.backgroundImage =
-        "linear-gradient(#0005,#0005),linear-gradient(135deg,#f8ccd8,#9e536c)";
+try{
 
-    }
+const ref =
+doc(
+db,
+"invitations",
+uid
+);
 
+const snapshot =
+await getDoc(ref);
 
-    const theme =
-      document.getElementById(
-        "theme"
-      ).value;
+if(!snapshot.exists()){
 
+return;
 
-    if (theme === "dark") {
+}
 
-      preview.style.backgroundImage =
-        image
-          ? `linear-gradient(#0007,#0007),
-             url("${image}")`
-          : "linear-gradient(#0006,#0006),linear-gradient(135deg,#252124,#9c7747)";
+const data =
+snapshot.data();
 
-    }
 
+const fields = [
 
-    if (theme === "sage") {
+"groomName",
+"brideName",
+"groomNick",
+"brideNick",
+"image",
 
-      preview.style.backgroundImage =
-        image
-          ? `linear-gradient(#0005,#0005),
-             url("${image}")`
-          : "linear-gradient(#0005,#0005),linear-gradient(135deg,#dbe5d5,#66816d)";
+"eventDate",
+"eventTime",
+"location",
+"maps",
 
-    }
+"parents",
+"story",
+"opening",
 
-  }
+"theme",
+"slug"
 
+];
 
-  /*
-  ==========================================
-  FORMAT TANGGAL
-  ==========================================
-  */
 
-  function formatDate(value) {
+fields.forEach(field => {
 
-    const date =
-      new Date(
-        value + "T00:00:00"
-      );
+const element =
+document.getElementById(field);
 
+if(
+element &&
+data[field] !== undefined
+){
 
-    return date.toLocaleDateString(
-      "id-ID",
-      {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-      }
-    );
+element.value =
+data[field];
 
-  }
+}
 
+});
 
-  /*
-  ==========================================
-  SIMPAN UNDANGAN
-  ==========================================
-  */
 
-  form.addEventListener(
-    "submit",
-    async (event) => {
+selectTheme(
+data.theme || "rose"
+);
 
-      event.preventDefault();
 
+selectReligion(
+data.religion || "islam"
+);
 
-      if (!currentUser) {
 
-        alert(
-          "Silakan login terlebih dahulu."
-        );
+loadReligiousQuotes(
+data.religion || "islam",
+data.religiousQuoteId || ""
+);
 
-        return;
 
-      }
+updatePreview();
 
+}catch(error){
 
-      const slug =
-        document
-          .getElementById("slug")
-          .value
-          .trim()
-          .toLowerCase();
+console.error(
+"LOAD ERROR:",
+error
+);
 
+}
 
-      /*
-      Validasi slug
-      */
+}
 
-      if (
-        !/^[a-z0-9-]+$/.test(slug)
-      ) {
 
-        message.textContent =
-          "Nama link hanya boleh huruf kecil, angka, dan tanda minus.";
+/* =================================
+   TEMA
+================================= */
 
-        message.style.color =
-          "#b33b4d";
+document
+.querySelectorAll(".theme-option")
+.forEach(option => {
 
-        return;
+option.addEventListener(
+"click",
+()=>{
 
-      }
+selectTheme(
+option.dataset.theme
+);
 
+});
 
-      saveButton.disabled = true;
+});
 
-      message.textContent =
-        "Menyimpan undangan...";
 
-      message.style.color =
-        "#806b72";
+function selectTheme(theme){
 
+document.getElementById(
+"theme"
+).value = theme;
 
-      try {
 
-        const data = {
+document
+.querySelectorAll(".theme-option")
+.forEach(option => {
 
-          uid: currentUser.uid,
+option.classList.toggle(
+"active",
+option.dataset.theme === theme
+);
 
-          groomName:
-            document.getElementById(
-              "groomName"
-            ).value.trim(),
+});
 
-          brideName:
-            document.getElementById(
-              "brideName"
-            ).value.trim(),
 
-          groomNick:
-            document.getElementById(
-              "groomNick"
-            ).value.trim(),
+updatePreview();
 
-          brideNick:
-            document.getElementById(
-              "brideNick"
-            ).value.trim(),
+}
 
-          image:
-            document.getElementById(
-              "image"
-            ).value.trim(),
 
-          eventDate:
-            document.getElementById(
-              "eventDate"
-            ).value,
+/* =================================
+   PREVIEW
+================================= */
 
-          eventTime:
-            document.getElementById(
-              "eventTime"
-            ).value,
+document
+.querySelectorAll("input,textarea")
+.forEach(element => {
 
-          location:
-            document.getElementById(
-              "location"
-            ).value.trim(),
+element.addEventListener(
+"input",
+updatePreview
+);
 
-          maps:
-            document.getElementById(
-              "maps"
-            ).value.trim(),
+});
 
-          parents:
-            document.getElementById(
-              "parents"
-            ).value.trim(),
 
-          story:
-            document.getElementById(
-              "story"
-            ).value.trim(),
+function updatePreview(){
 
-          opening:
-            document.getElementById(
-              "opening"
-            ).value.trim(),
+const groom =
+document.getElementById(
+"groomName"
+).value ||
+"Nama Pria";
 
-          theme:
-            document.getElementById(
-              "theme"
-            ).value,
 
-          slug: slug,
+const bride =
+document.getElementById(
+"brideName"
+).value ||
+"Nama Wanita";
 
-          updatedAt:
-            serverTimestamp()
 
-        };
+const date =
+document.getElementById(
+"eventDate"
+).value;
 
 
-        await setDoc(
+document.getElementById(
+"previewGroom"
+).textContent =
+groom;
 
-          doc(
-            db,
-            "invitations",
-            currentUser.uid
-          ),
 
-          data,
+document.getElementById(
+"previewBride"
+).textContent =
+bride;
 
-          {
-            merge: true
-          }
 
-        );
+document.getElementById(
+"previewDate"
+).textContent =
+date
+? formatDate(date)
+: "Tanggal Pernikahan";
 
 
-        message.textContent =
-          "🎉 Undangan berhasil disimpan!";
+const image =
+document.getElementById(
+"image"
+).value;
 
-        message.style.color =
-          "#27834a";
 
+const preview =
+document.getElementById(
+"preview"
+);
 
-        setTimeout(
-          () => {
 
-            window.location.href =
-              "dashboard.html";
+const theme =
+document.getElementById(
+"theme"
+).value;
 
-          },
-          1000
-        );
 
+let background;
 
-      } catch(error) {
 
-        console.error(error);
+if(theme === "dark"){
 
-        message.textContent =
-          "Gagal menyimpan: " +
-          error.message;
+background =
+image
+? `linear-gradient(#0007,#0007),url("${image}")`
+: "linear-gradient(#0006,#0006),linear-gradient(135deg,#252124,#9c7747)";
 
-        message.style.color =
-          "#b33b4d";
+}else if(theme === "sage"){
 
-        saveButton.disabled =
-          false;
+background =
+image
+? `linear-gradient(#0005,#0005),url("${image}")`
+: "linear-gradient(#0005,#0005),linear-gradient(135deg,#dbe5d5,#66816d)";
 
-      }
+}else{
 
-    }
-  );
+background =
+image
+? `linear-gradient(#0005,#0005),url("${image}")`
+: "linear-gradient(#0005,#0005),linear-gradient(135deg,#f8ccd8,#9e536c)";
+
+}
+
+
+preview.style.backgroundImage =
+background;
+
+}
+
+
+/* =================================
+   FORMAT TANGGAL
+================================= */
+
+function formatDate(value){
+
+const date =
+new Date(
+value + "T00:00:00"
+);
+
+return date.toLocaleDateString(
+"id-ID",
+{
+weekday:"long",
+day:"numeric",
+month:"long",
+year:"numeric"
+}
+);
+
+}
+
+
+/* =================================
+   SIMPAN
+================================= */
+
+form.addEventListener(
+"submit",
+async event => {
+
+event.preventDefault();
+
+
+if(!currentUser){
+
+alert(
+"Silakan login terlebih dahulu."
+);
+
+return;
+
+}
+
+
+const slug =
+document
+.getElementById("slug")
+.value
+.trim()
+.toLowerCase();
+
+
+if(
+!/^[a-z0-9-]+$/.test(slug)
+){
+
+message.textContent =
+"Nama link hanya boleh huruf kecil, angka, dan tanda minus.";
+
+message.style.color =
+"#b33b4d";
+
+return;
+
+}
+
+
+const selectedQuote =
+getSelectedQuote();
+
+
+saveButton.disabled =
+true;
+
+message.textContent =
+"Menyimpan undangan...";
+
+message.style.color =
+"#806b72";
+
+
+try{
+
+const data = {
+
+uid:
+currentUser.uid,
+
+groomName:
+document.getElementById(
+"groomName"
+).value.trim(),
+
+brideName:
+document.getElementById(
+"brideName"
+).value.trim(),
+
+groomNick:
+document.getElementById(
+"groomNick"
+).value.trim(),
+
+brideNick:
+document.getElementById(
+"brideNick"
+).value.trim(),
+
+image:
+document.getElementById(
+"image"
+).value.trim(),
+
+eventDate:
+document.getElementById(
+"eventDate"
+).value,
+
+eventTime:
+document.getElementById(
+"eventTime"
+).value,
+
+location:
+document.getElementById(
+"location"
+).value.trim(),
+
+maps:
+document.getElementById(
+"maps"
+).value.trim(),
+
+parents:
+document.getElementById(
+"parents"
+).value.trim(),
+
+story:
+document.getElementById(
+"story"
+).value.trim(),
+
+opening:
+document.getElementById(
+"opening"
+).value.trim(),
+
+theme:
+document.getElementById(
+"theme"
+).value,
+
+slug:
+slug,
+
+
+/* AGAMA */
+
+religion:
+religionSelect.value,
+
+religiousQuoteId:
+selectedQuote
+? selectedQuote.id
+: "",
+
+religiousQuote:
+selectedQuote
+? selectedQuote.text
+: "",
+
+religiousQuoteSource:
+selectedQuote
+? selectedQuote.source
+: "",
+
+
+updatedAt:
+serverTimestamp()
+
+};
+
+
+await setDoc(
+
+doc(
+db,
+"invitations",
+currentUser.uid
+),
+
+data,
+
+{
+merge:true
+}
+
+);
+
+
+message.textContent =
+"🎉 Undangan berhasil disimpan!";
+
+message.style.color =
+"#27834a";
+
+
+setTimeout(
+()=>{
+
+window.location.href =
+"dashboard.html";
+
+},
+1000
+);
+
+
+}catch(error){
+
+console.error(
+"SAVE ERROR:",
+error
+);
+
+message.textContent =
+"Gagal menyimpan: " +
+error.message;
+
+message.style.color =
+"#b33b4d";
+
+saveButton.disabled =
+false;
+
+}
+
+});
 
 </script>
 
