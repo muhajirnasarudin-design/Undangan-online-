@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Undangan Pernikahan</title>
+
+  <meta name="description" content="Undangan Pernikahan">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7eef1;
+      color: #382c31;
+    }
+
+    body.locked {
+      overflow: hidden;
+    }
+
+    button,
+    a {
+      font-family: inherit;
+    }
+
+    /* =========================
+       LOADING
+    ========================= */
+
+    #loading {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .loading-box {
+      background: white;
+      padding: 35px;
+      border-radius: 25px;
+      box-shadow: 0 15px 50px rgba(80,40,55,.12);
+    }
+
+    .loading-box .heart {
+      font-size: 45px;
+      margin-bottom: 15px;
+    }
+
+    /* =========================
+       ERROR
+    ========================= */
+
+    #error {
+      display: none;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .error-box {
+      max-width: 450px;
+      background: white;
+      padding: 35px;
+      border-radius: 25px;
+    }
+
+    .error-box h2 {
+      font-family: Georgia, serif;
+      margin-bottom: 10px;
+    }
+
+    .error-box p {
+      color: #806b72;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .error-box a {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #b65b77;
+      color: white;
+      border-radius: 12px;
+      text-decoration: none;
+    }
+
+    /* =========================
+       APP
+    ========================= */
+
+    #app {
+      display: none;
+    }
+
+    /* =========================
+       COVER
+    ========================= */
+
+    .cover {
+      min-height: 100vh;
+
+      position: relative;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      color: white;
+
+      padding: 30px;
+
+      background:
+        linear-gradient(
+          rgba(30,15,20,.48),
+          rgba(30,15,20,.55)
+        ),
+        linear-gradient(
+          135deg,
+          #f5bdcb,
+          #9d526b
+        );
+
+      background-size: cover;
+      background-position: center;
+
+      overflow: hidden;
+    }
+
+    .cover-content {
+      max-width: 700px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cover small {
+      letter-spacing: 5px;
+      font-size: 12px;
+    }
+
+    .cover h1 {
+      font-family: Georgia, serif;
+      font-size: clamp(48px, 9vw, 90px);
+      font-weight: normal;
+      line-height: .9;
+      margin: 30px 0;
+    }
+
+    .cover .date {
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+
+    .open-button {
+      border: 0;
+      background: white;
+      color: #9d526b;
+
+      padding: 15px 25px;
+
+      border-radius: 30px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      box-shadow: 0 10px 30px rgba(0,0,0,.15);
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .content {
+      max-width: 850px;
+      margin: auto;
+      background: #fffdfd;
+    }
+
+    section {
+      padding: 80px 25px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-family: Georgia, serif;
+      font-size: 34px;
+      font-weight: normal;
+      margin-bottom: 20px;
+    }
+
+    .section-subtitle {
+      color: #806b72;
+      line-height: 1.8;
+      max-width: 650px;
+      margin: auto;
+    }
+
+    /* =========================
+       COUPLE
+    ========================= */
+
+    .couple {
+      background: #fff7f9;
+    }
+
+    .couple-names {
+      font-family: Georgia, serif;
+      font-size: 35px;
+      line-height: 1.5;
+      color: #9d526b;
+    }
+
+    .amp {
+      font-size: 25px;
+      color: #b88998;
+      margin: 8px 0;
+    }
+
+    /* =========================
+       EVENT
+    ========================= */
+
+    .event-card {
+      max-width: 650px;
+      margin: 30px auto 0;
+
+      padding: 30px;
+
+      border-radius: 22px;
+
+      background: #fff;
+
+      box-shadow:
+        0 15px 50px rgba(100,50,70,.08);
+    }
+
+    .event-icon {
+      font-size: 35px;
+      margin-bottom: 15px;
+    }
+
+    .event-date {
+      font-family: Georgia, serif;
+      font-size: 27px;
+      margin-bottom: 15px;
+    }
+
+    .event-info {
+      color: #806b72;
+      line-height: 1.9;
+    }
+
+    .maps-button {
+      display: inline-block;
+
+      margin-top: 20px;
+
+      padding: 12px 20px;
+
+      background: #b65b77;
+      color: white;
+
+      border-radius: 12px;
+
+      text-decoration: none;
+
+      font-weight: bold;
+    }
+
+    /* =========================
+       PARENTS
+    ========================= */
+
+    .parents {
+      background: #fff7f9;
+    }
+
+    .parents-text {
+      white-space: pre-line;
+
+      max-width: 650px;
+
+      margin: auto;
+
+      line-height: 2;
+
+      color: #806b72;
+    }
+
+    /* =========================
+       STORY
+    ========================= */
+
+    .story {
+      white-space: pre-line;
+
+      max-width: 680px;
+
+      margin: auto;
+
+      line-height: 2;
+
+      color: #66545b;
+
+      text-align: left;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      text-align: center;
+
+      padding: 60px 25px;
+
+      background: #3a2b31;
+
+      color: white;
+    }
+
+    footer h2 {
+      font-family: Georgia, serif;
+      font-weight: normal;
+      margin-bottom: 15px;
+    }
+
+    footer p {
+      color: #d8c9ce;
+      font-size: 13px;
+    }
+
+    /* =========================
+       MUSIC
+    ========================= */
+
+    .music-button {
+      position: fixed;
+
+      right: 20px;
+      bottom: 20px;
+
+      width: 50px;
+      height: 50px;
+
+      border-radius: 50%;
+
+      border: 0;
+
+      background: #b65b77;
+      color: white;
+
+      font-size: 20px;
+
+      cursor: pointer;
+
+      z-index: 999;
+
+      box-shadow:
+        0 8px 25px rgba(0,0,0,.2);
+    }
+
+    /* =========================
+       THEME DARK
+    ========================= */
+
+    body.theme-dark {
+      background: #171417;
+    }
+
+    body.theme-dark .content {
+      background: #201c1f;
+      color: #f8eef1;
+    }
+
+    body.theme-dark .couple,
+    body.theme-dark .parents {
+      background: #181519;
+    }
+
+    body.theme-dark .section-subtitle,
+    body.theme-dark .event-info,
+    body.theme-dark .parents-text,
+    body.theme-dark .story {
+      color: #d3c5ca;
+    }
+
+    body.theme-dark .event-card {
+      background: #292326;
+    }
+
+    body.theme-dark .section-title,
+    body.theme-dark .event-date {
+      color: #f3d9a9;
+    }
+
+    /* =========================
+       THEME SAGE
+    ========================= */
+
+    body.theme-sage .cover {
+      background:
+        linear-gradient(
+          rgba(30,45,35,.45),
+          rgba(30,45,35,.55)
+        ),
+        linear-gradient(
+          135deg,
+          #dbe5d5,
+          #66816d
+        );
+    }
+
+    body.theme-sage .content {
+      background: #fbfdf9;
+    }
+
+    body.theme-sage .couple,
+    body.theme-sage .parents {
+      background: #f1f6ee;
+    }
+
+    body.theme-sage .couple-names {
+      color: #52715c;
+    }
+
+    body.theme-sage .maps-button,
+    body.theme-sage .music-button {
+      background: #52715c;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media(max-width:600px) {
+
+      section {
+        padding: 65px 20px;
+      }
+
+      .cover h1 {
+        font-size: 52px;
+      }
+
+      .section-title {
+        font-size: 29px;
+      }
+
+      .couple-names {
+        font-size: 29px;
+      }
+
+      .event-card {
+        padding: 25px 18px;
+      }
+    }
+  </style>
+</head>
+
+<body class="locked">
+
+  <!-- LOADING -->
+
+  <div id="loading">
+
+    <div class="loading-box">
+
+      <div class="heart">
+        💍
+      </div>
+
+      <p>
+        Memuat undangan...
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div id="error">
+
+    <div class="error-box">
+
+      <div style="font-size:45px;">
+        💌
+      </div>
+
+      <h2>
+        Undangan Tidak Ditemukan
+      </h2>
+
+      <p id="errorMessage">
+        Link undangan tidak valid atau
+        undangan belum dibuat.
+      </p>
+
+      <a href="index.html">
+        Kembali
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- APP -->
+
+  <div id="app">
+
+    <!-- COVER -->
+
+    <div class="cover" id="cover">
+
+      <div class="cover-content">
+
+        <small>
+          THE WEDDING OF
+        </small>
+
+        <h1>
+
+          <span id="coverGroom">
+            -
+          </span>
+
+          <br>
+
+          <span style="font-size:.55em;">
+            &
+          </span>
+
+          <br>
+
+          <span id="coverBride">
+            -
+          </span>
+
+        </h1>
+
+        <div
+          class="date"
+          id="coverDate"
+        >
+          -
+        </div>
+
+        <button
+          class="open-button"
+          id="openButton"
+        >
+          💌 Buka Undangan
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <main
+      class="content"
+      id="mainContent"
+    >
+
+      <!-- COUPLE -->
+
+      <section class="couple">
+
+        <h2 class="section-title">
+          Assalamu'alaikum Wr. Wb.
+        </h2>
+
+        <p
+          class="section-subtitle"
+          id="opening"
+        >
+          Dengan memohon rahmat dan ridho
+          Allah SWT, kami bermaksud mengundang
+          Bapak/Ibu/Saudara/i untuk hadir dalam
+          acara pernikahan kami.
+        </p>
+
+        <div style="height:35px;"></div>
+
+        <div class="couple-names">
+
+          <span id="groomName">
+            -
+          </span>
+
+          <div class="amp">
+            &
+          </div>
+
+          <span id="brideName">
+            -
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- EVENT -->
+
+      <section>
+
+        <div style="font-size:35px;">
+          💍
+        </div>
+
+        <h2 class="section-title">
+          Detail Acara
+        </h2>
+
+        <div class="event-card">
+
+          <div class="event-icon">
+            📅
+          </div>
+
+          <div
+            class="event-date"
+            id="eventDate"
+          >
+            -
+          </div>
+
+          <div class="event-info">
+
+            <div>
+              🕐
+              <span id="eventTime">
+                -
+              </span>
+            </div>
+
+            <div>
+              📍
+              <span id="location">
+                -
+              </span>
+            </div>
+
+          </div>
+
+          <a
+            href="#"
+            target="_blank"
+            class="maps-button"
+            id="mapsButton"
+            style="display:none;"
+          >
+            📍 Buka Google Maps
+          </a>
+
+        </div>
+
+      </section>
+
+
+      <!-- PARENTS -->
+
+      <section
+        class="parents"
+        id="parentsSection"
+      >
+
+        <h2 class="section-title">
+          Keluarga Mempelai
+        </h2>
+
+        <p
+          class="parents-text"
+          id="parents"
+        >
+        </p>
+
+      </section>
+
+
+      <!-- STORY -->
+
+      <section id="storySection">
+
+        <h2 class="section-title">
+          Cerita Kami
+        </h2>
+
+        <p
+          class="story"
+          id="story"
+        >
+        </p>
+
+      </section>
+
+
+      <!-- CLOSING -->
+
+      <section class="couple">
+
+        <h2 class="section-title">
+          Terima Kasih ❤️
+        </h2>
+
+        <p class="section-subtitle">
+
+          Merupakan suatu kehormatan dan
+          kebahagiaan bagi kami apabila
+          Bapak/Ibu/Saudara/i berkenan hadir
+          dan memberikan doa restu.
+
+          <br><br>
+
+          Wassalamu'alaikum Wr. Wb.
+
+        </p>
+
+        <div style="height:30px;"></div>
+
+        <div
+          class="couple-names"
+          style="font-size:25px;"
+        >
+
+          <span id="footerGroom">
+            -
+          </span>
+
+          &
+
+          <span id="footerBride">
+            -
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- FOOTER -->
+
+      <footer>
+
+        <h2>
+          UndanganKu
+        </h2>
+
+        <p>
+          Dibuat dengan ❤️ untuk hari
+          istimewa.
+        </p>
+
+      </footer>
+
+    </main>
+
+
+    <!-- MUSIC -->
+
+    <button
+      class="music-button"
+      id="musicButton"
+      title="Musik"
+    >
+      🔇
+    </button>
+
+  </div>
+
+
+  <!-- AUDIO -->
+
+  <audio
+    id="music"
+    loop
+    preload="auto"
+  ></audio>
+
+
+
+  <script type="module">
+
+    import {
+
+      db,
+
+      collection,
+      query,
+      where,
+      getDocs
+
+    } from "./firebase.js";
+
+
+    const loading =
+      document.getElementById(
+        "loading"
+      );
+
+    const error =
+      document.getElementById(
+        "error"
+      );
+
+    const app =
+      document.getElementById(
+        "app"
+      );
+
+    const errorMessage =
+      document.getElementById(
+        "errorMessage"
+      );
+
+
+    /*
+    =====================================
+    AMBIL SLUG DARI URL
+    =====================================
+    */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const slug =
+      params.get("slug");
+
+
+    if (!slug) {
+
+      showError(
+        "Link undangan tidak memiliki nama undangan."
+      );
+
+    } else {
+
+      loadInvitation(slug);
+
+    }
+
+
+    /*
+    =====================================
+    LOAD FIRESTORE
+    =====================================
+    */
+
+    async function loadInvitation(slug) {
+
+      try {
+
+        const invitationQuery =
+          query(
+
+            collection(
+              db,
+              "invitations"
+            ),
+
+            where(
+              "slug",
+              "==",
+              slug
+            )
+
+          );
+
+
+        const snapshot =
+          await getDocs(
+            invitationQuery
+          );
+
+
+        if (snapshot.empty) {
+
+          showError(
+            "Undangan dengan link tersebut tidak ditemukan."
+          );
+
+          return;
+
+        }
+
+
+        const data =
+          snapshot.docs[0].data();
+
+
+        renderInvitation(data);
+
+
+      } catch(error) {
+
+        console.error(error);
+
+        showError(
+          "Tidak dapat memuat undangan. Periksa koneksi internet atau Firestore Rules."
+        );
+
+      }
+
+    }
+
+
+    /*
+    =====================================
+    RENDER
+    =====================================
+    */
+
+    function renderInvitation(data) {
+
+      const groom =
+        data.groomName ||
+        "Mempelai Pria";
+
+
+      const bride =
+        data.brideName ||
+        "Mempelai Wanita";
+
+
+      document.title =
+        `${groom} & ${bride} — Undangan Pernikahan`;
+
+
+      /*
+      COVER
+      */
+
+      setText(
+        "coverGroom",
+        groom
+      );
+
+      setText(
+        "coverBride",
+        bride
+      );
+
+      setText(
+        "groomName",
+        groom
+      );
+
+      setText(
+        "brideName",
+        bride
+      );
+
+      setText(
+        "footerGroom",
+        groom
+      );
+
+      setText(
+        "footerBride",
+        bride
+      );
+
+
+      /*
+      TANGGAL
+      */
+
+      if (data.eventDate) {
+
+        const formattedDate =
+          formatDate(
+            data.eventDate
+          );
+
+        setText(
+          "coverDate",
+          formattedDate
+        );
+
+        setText(
+          "eventDate",
+          formattedDate
+        );
+
+      }
+
+
+      /*
+      WAKTU
+      */
+
+      setText(
+        "eventTime",
+        data.eventTime ||
+        "-"
+      );
+
+
+      /*
+      LOKASI
+      */
+
+      setText(
+        "location",
+        data.location ||
+        "-"
+      );
+
+
+      /*
+      PEMBUKA
+      */
+
+      if (data.opening) {
+
+        setText(
+          "opening",
+          data.opening
+        );
+
+      }
+
+
+      /*
+      ORANG TUA
+      */
+
+      if (data.parents) {
+
+        setText(
+          "parents",
+          data.parents
+        );
+
+      } else {
+
+        document
+          .getElementById(
+            "parentsSection"
+          )
+          .style.display =
+            "none";
+
+      }
+
+
+      /*
+      CERITA
+      */
+
+      if (data.story) {
+
+        setText(
+          "story",
+          data.story
+        );
+
+      } else {
+
+        document
+          .getElementById(
+            "storySection"
+          )
+          .style.display =
+            "none";
+
+      }
+
+
+      /*
+      GOOGLE MAPS
+      */
+
+      if (data.maps) {
+
+        const mapsButton =
+          document.getElementById(
+            "mapsButton"
+          );
+
+        mapsButton.href =
+          data.maps;
+
+        mapsButton.style.display =
+          "inline-block";
+
+      }
+
+
+      /*
+      FOTO COVER
+      */
+
+      if (data.image) {
+
+        const cover =
+          document.getElementById(
+            "cover"
+          );
+
+        cover.style.backgroundImage =
+          `linear-gradient(
+             rgba(30,15,20,.45),
+             rgba(30,15,20,.55)
+           ),
+           url("${data.image}")`;
+
+      }
+
+
+      /*
+      TEMA
+      */
+
+      if (data.theme === "dark") {
+
+        document.body.classList.add(
+          "theme-dark"
+        );
+
+      }
+
+
+      if (data.theme === "sage") {
+
+        document.body.classList.add(
+          "theme-sage"
+        );
+
+      }
+
+
+      /*
+      MUSIK
+
+      Jika nanti editor sudah mempunyai
+      field musicUrl, otomatis digunakan.
+      */
+
+      if (data.musicUrl) {
+
+        const music =
+          document.getElementById(
+            "music"
+          );
+
+        music.src =
+          data.musicUrl;
+
+      }
+
+
+      /*
+      TAMPILKAN APP
+      */
+
+      loading.style.display =
+        "none";
+
+      app.style.display =
+        "block";
+
+    }
+
+
+    /*
+    =====================================
+    BUKA UNDANGAN
+    =====================================
+    */
+
+    document
+      .getElementById(
+        "openButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          document.body.classList.remove(
+            "locked"
+          );
+
+
+          document
+            .getElementById(
+              "mainContent"
+            )
+            .scrollIntoView({
+              behavior: "smooth"
+            });
+
+
+          /*
+          Coba mulai musik.
+          Browser bisa memblokir autoplay,
+          tetapi klik user biasanya mengizinkan.
+          */
+
+          const music =
+            document.getElementById(
+              "music"
+            );
+
+
+          if (music.src) {
+
+            try {
+
+              await music.play();
+
+              document
+                .getElementById(
+                  "musicButton"
+                )
+                .textContent =
+                  "🔊";
+
+            } catch(error) {
+
+              console.log(
+                "Musik belum dapat diputar."
+              );
+
+            }
+
+          }
+
+        }
+      );
+
+
+    /*
+    =====================================
+    MUSIC BUTTON
+    =====================================
+    */
+
+    document
+      .getElementById(
+        "musicButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          const music =
+            document.getElementById(
+              "music"
+            );
+
+          if (!music.src) {
+
+            alert(
+              "Musik belum ditambahkan pada undangan."
+            );
+
+            return;
+
+          }
+
+
+          if (music.paused) {
+
+            try {
+
+              await music.play();
+
+              document
+                .getElementById(
+                  "musicButton"
+                )
+                .textContent =
+                "🔊";
+
+            } catch(error) {
+
+              console.error(error);
+
+            }
+
+          } else {
+
+            music.pause();
+
+            document
+              .getElementById(
+                "musicButton"
+              )
+              .textContent =
+              "🔇";
+
+          }
+
+        }
+      );
+
+
+    /*
+    =====
