@@ -2,13 +2,18 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#9f536c">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#9d526b">
 
 <title>Undangan Pernikahan</title>
+<meta name="description" content="Undangan Pernikahan Digital">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 html,body{
   width:100%;
@@ -19,12 +24,20 @@ html,body{
 body{
   font-family:Arial,sans-serif;
   background:#171417;
-  color:#382c31;
+  color:#fff;
 }
 
-button,a{font-family:inherit}
+button,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
 
-#loading,#error{
+/* =========================
+   LOADING & ERROR
+========================= */
+
+#loading,
+#error{
   position:fixed;
   inset:0;
   z-index:9999;
@@ -32,53 +45,68 @@ button,a{font-family:inherit}
   align-items:center;
   justify-content:center;
   text-align:center;
-  background:#fff7f9;
   padding:25px;
+  background:#fff7f9;
+  color:#35282d;
 }
 
-.loading-box,.error-box{
+#error{
+  display:none;
+}
+
+.loader-box,
+.error-box{
+  width:min(430px,100%);
+  padding:35px 25px;
   background:#fff;
-  padding:35px;
   border-radius:25px;
-  max-width:430px;
-  box-shadow:0 20px 60px #0002;
+  box-shadow:0 20px 70px #0002;
 }
 
-.loading-box div,
-.error-box div{
+.loader-icon,
+.error-icon{
   font-size:50px;
   margin-bottom:15px;
 }
 
-#loading p,
-#error p{
-  color:#806b72;
-  line-height:1.7;
+.loader-icon{
+  animation:pulse 1.3s infinite;
 }
 
-#error{display:none}
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.12)}
+}
 
-#error h2{
+.error-box h2{
   font-family:Georgia,serif;
   margin-bottom:12px;
 }
 
-#error a{
+.error-box p{
+  color:#806b72;
+  line-height:1.7;
+  margin-bottom:20px;
+}
+
+.error-box a{
   display:inline-block;
-  margin-top:20px;
-  padding:13px 24px;
-  border-radius:30px;
   background:#b65b77;
-  color:white;
+  color:#fff;
+  padding:12px 22px;
+  border-radius:30px;
   text-decoration:none;
 }
 
-/* APP */
+/* =========================
+   APP
+========================= */
 
 #app{
   display:none;
   width:100%;
   height:100%;
+  position:relative;
 }
 
 .slider{
@@ -88,177 +116,219 @@ button,a{font-family:inherit}
   overflow:hidden;
 }
 
-.pages{
-  display:flex;
-  width:300%;
-  height:100%;
-  transition:transform .75s cubic-bezier(.77,0,.18,1);
-  will-change:transform;
-}
-
 .page{
-  width:33.333333%;
+  position:absolute;
+  inset:0;
+  width:100%;
   height:100%;
-  flex-shrink:0;
   overflow-y:auto;
   overflow-x:hidden;
-  position:relative;
+  opacity:0;
+  visibility:hidden;
+  transform:translateX(100%);
+  transition:
+    transform .7s cubic-bezier(.77,0,.18,1),
+    opacity .5s ease,
+    visibility .7s;
+  background:#fffdfd;
+  color:#35282d;
+  -webkit-overflow-scrolling:touch;
+}
+
+.page.active{
+  opacity:1;
+  visibility:visible;
+  transform:translateX(0);
+}
+
+.page.prev{
+  transform:translateX(-100%);
 }
 
 .page::-webkit-scrollbar{
   width:0;
 }
 
-/* COVER */
+/* =========================
+   COVER
+========================= */
 
 .cover{
   min-height:100%;
+  position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
-  color:white;
-  padding:30px;
-  position:relative;
+  padding:35px 25px;
+  color:#fff;
+
   background:
-    linear-gradient(#170c1080,#170c1090),
+    linear-gradient(#0007,#0007),
     linear-gradient(135deg,#f8ccd8,#9e536c);
+
   background-size:cover;
   background-position:center;
 }
 
-.cover:before{
+.cover::before{
   content:"";
   position:absolute;
-  inset:18px;
-  border:1px solid #ffffff66;
+  inset:20px;
+  border:1px solid #ffffff55;
   border-radius:25px;
+  pointer-events:none;
 }
 
 .cover-content{
+  width:min(650px,100%);
   position:relative;
   z-index:2;
-  width:min(700px,100%);
 }
 
 .cover-label{
   letter-spacing:5px;
-  font-size:12px;
+  font-size:11px;
   text-transform:uppercase;
+  opacity:.9;
+}
+
+.guest-box{
+  margin:22px auto 0;
+  max-width:340px;
+}
+
+.guest-label{
+  font-size:12px;
+  opacity:.8;
+  margin-bottom:5px;
+}
+
+.guest-name{
+  font-family:Georgia,serif;
+  font-size:23px;
+}
+
+.cover-model{
+  font-size:58px;
+  margin:22px 0 10px;
+  line-height:1;
+  filter:drop-shadow(0 8px 15px #0005);
 }
 
 .cover h1{
   font-family:Georgia,serif;
   font-weight:normal;
-  font-size:clamp(48px,10vw,90px);
-  line-height:.85;
-  margin:35px 0;
+  font-size:clamp(48px,11vw,88px);
+  line-height:.88;
+  margin:20px 0 25px;
   text-shadow:0 8px 30px #0005;
 }
 
-.cover h1 .and{
-  font-size:.42em;
+.cover-amp{
   display:block;
-  margin:15px 0;
+  font-size:.42em;
+  margin:12px 0;
+  color:#ffe9ef;
 }
 
 .cover-date{
   font-size:15px;
-  letter-spacing:1px;
+  margin-bottom:12px;
 }
 
-.guest{
-  margin:28px auto 20px;
-  padding:18px 25px;
-  max-width:420px;
-  background:#ffffff18;
-  border:1px solid #ffffff40;
-  border-radius:18px;
-  backdrop-filter:blur(8px);
+.cover-religion{
+  font-size:13px;
+  opacity:.9;
+  margin-bottom:27px;
 }
 
-.guest small{
-  display:block;
-  opacity:.8;
-  margin-bottom:7px;
-}
-
-.guest strong{
-  font-family:Georgia,serif;
-  font-size:20px;
-}
-
-.religion-cover{
-  margin:15px;
-  font-size:14px;
-}
-
-.open-btn{
+.open-button,
+.next-button{
   border:0;
-  padding:15px 28px;
-  border-radius:30px;
+  cursor:pointer;
   background:#fff;
   color:#9d526b;
+  padding:15px 27px;
+  border-radius:30px;
   font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 10px 35px #0004;
+  box-shadow:0 12px 35px #0004;
 }
 
-/* GENERAL */
-
-.inner{
-  width:min(900px,100%);
-  margin:auto;
-  min-height:100%;
-}
-
-.section{
-  padding:70px 25px;
-}
-
-.center{text-align:center}
-
-.eyebrow{
-  color:#b65b77;
-  letter-spacing:3px;
+.cover-hint{
+  display:block;
+  margin-top:18px;
   font-size:11px;
-  font-weight:bold;
-  margin-bottom:10px;
+  opacity:.65;
 }
 
-.title{
-  font-family:Georgia,serif;
-  font-size:36px;
-  font-weight:normal;
-  margin-bottom:20px;
-}
+/* =========================
+   PAGE CONTENT
+========================= */
 
-.subtitle{
-  max-width:680px;
+.page-inner{
+  width:min(850px,100%);
+  min-height:100%;
   margin:auto;
-  line-height:1.9;
-  color:#806b72;
 }
 
-/* PAGE 2 */
-
-.page-two{
-  background:#fffdfd;
-}
-
-.salutation{
-  background:#fff7f9;
+section{
+  padding:75px 24px;
   text-align:center;
 }
 
+.section-kicker{
+  color:#b65b77;
+  font-size:11px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+.section-title{
+  font-family:Georgia,serif;
+  font-weight:normal;
+  font-size:34px;
+  margin-bottom:20px;
+}
+
+.section-text{
+  max-width:680px;
+  margin:auto;
+  color:#76636a;
+  line-height:1.9;
+  white-space:pre-line;
+}
+
+.names{
+  font-family:Georgia,serif;
+  color:#9d526b;
+  font-size:36px;
+  line-height:1.4;
+}
+
+.names .amp{
+  font-size:24px;
+  color:#b88998;
+  margin:5px 0;
+}
+
+/* =========================
+   RELIGION
+========================= */
+
+.religion-section{
+  background:#fff7f9;
+}
+
 .religion-card{
-  max-width:720px;
-  margin:25px auto;
-  padding:32px 25px;
-  border-radius:25px;
-  border:1px solid #efdce2;
+  max-width:700px;
+  margin:30px auto 0;
+  padding:30px 24px;
+  border-radius:24px;
   background:#fff;
-  box-shadow:0 15px 50px #6432460d;
+  border:1px solid #efdce2;
+  box-shadow:0 15px 50px #64324612;
 }
 
 .religion-icon{
@@ -275,316 +345,293 @@ button,a{font-family:inherit}
 
 .religion-text{
   white-space:pre-line;
-  line-height:2;
   color:#66545b;
+  line-height:2;
 }
 
-.couple{
-  text-align:center;
-  background:#fff;
+/* =========================
+   PHOTO
+========================= */
+
+.photo-wrap{
+  width:min(600px,100%);
+  margin:30px auto;
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 20px 60px #0002;
 }
 
-.photo{
-  width:180px;
-  height:180px;
-  border-radius:50%;
+.photo-wrap img{
+  width:100%;
+  max-height:520px;
+  display:block;
   object-fit:cover;
-  border:6px solid white;
-  box-shadow:0 15px 40px #0002;
-  margin-bottom:25px;
 }
 
-.names{
-  font-family:Georgia,serif;
-  color:#9d526b;
-  font-size:38px;
-  line-height:1.3;
-}
-
-.names .amp{
-  font-size:25px;
-  color:#b88998;
-  margin:7px;
-}
-
-.parents{
-  margin-top:30px;
-  padding:25px;
-  background:#fff7f9;
-  border-radius:20px;
-}
-
-.parents h3{
-  font-family:Georgia,serif;
-  margin-bottom:15px;
-}
-
-.parents p{
-  white-space:pre-line;
-  color:#66545b;
-  line-height:2;
-}
-
-/* PAGE 3 */
-
-.page-three{
-  background:#fff7f9;
-}
+/* =========================
+   EVENT
+========================= */
 
 .event-card{
+  max-width:650px;
+  margin:30px auto;
+  padding:30px 22px;
   background:#fff;
   border-radius:25px;
-  padding:35px 25px;
-  margin:25px auto;
-  max-width:680px;
-  text-align:center;
-  box-shadow:0 15px 50px #6432460d;
+  box-shadow:0 15px 50px #64324612;
+  border:1px solid #f0e1e5;
 }
 
 .event-icon{
   font-size:40px;
-  margin-bottom:12px;
+  margin-bottom:15px;
 }
 
 .event-date{
   font-family:Georgia,serif;
-  font-size:28px;
+  font-size:27px;
   margin-bottom:18px;
+  color:#9d526b;
 }
 
-.event-info{
+.event-row{
+  color:#76636a;
   line-height:2;
-  color:#806b72;
+  margin:5px 0;
 }
 
-.action{
+.maps-button{
   display:inline-block;
-  border:0;
-  text-decoration:none;
-  cursor:pointer;
+  margin-top:20px;
   padding:13px 22px;
   border-radius:30px;
-  font-weight:bold;
-  margin:8px 4px;
-}
-
-.maps{
+  text-decoration:none;
+  color:#fff;
   background:#b65b77;
-  color:white;
+  font-weight:bold;
 }
 
-.whatsapp{
-  background:#25d366;
-  color:white;
+/* =========================
+   FAMILY
+========================= */
+
+.family-section{
+  background:#fff7f9;
 }
 
-.share{
-  background:#3d3540;
-  color:white;
+.family-box{
+  max-width:680px;
+  margin:30px auto;
+  line-height:2;
+  white-space:pre-line;
+  color:#66545b;
 }
+
+/* =========================
+   STORY
+========================= */
 
 .story{
   max-width:680px;
   margin:auto;
-  white-space:pre-line;
+  text-align:left;
   line-height:2;
+  white-space:pre-line;
   color:#66545b;
 }
 
-.closing{
-  background:#fff;
-  text-align:center;
+/* =========================
+   SHARE
+========================= */
+
+.share-section{
+  background:#fff7f9;
 }
 
-.closing-text{
-  max-width:680px;
-  margin:auto;
-  white-space:pre-line;
-  line-height:2;
-  color:#66545b;
+.share-button,
+.wa-button{
+  display:inline-block;
+  border:0;
+  margin-top:18px;
+  padding:14px 23px;
+  border-radius:30px;
+  font-weight:bold;
+  cursor:pointer;
+  text-decoration:none;
 }
 
-.footer-names{
-  margin-top:25px;
+.share-button{
+  background:#b65b77;
+  color:#fff;
+}
+
+.wa-button{
+  background:#25d366;
+  color:#fff;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.thanks{
+  padding-bottom:100px;
+}
+
+.thanks-names{
   font-family:Georgia,serif;
   font-size:25px;
   color:#9d526b;
+  margin-top:25px;
 }
 
-/* NAVIGATION */
+footer{
+  background:#34272d;
+  color:#fff;
+  text-align:center;
+  padding:45px 20px;
+}
 
-.nav{
+footer h2{
+  font-family:Georgia,serif;
+  font-weight:normal;
+  margin-bottom:10px;
+}
+
+footer p{
+  color:#d9cbd0;
+  font-size:12px;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.page-indicator{
   position:fixed;
+  top:18px;
   left:50%;
-  bottom:20px;
   transform:translateX(-50%);
   z-index:1000;
   display:flex;
-  gap:8px;
-  padding:8px;
-  border-radius:30px;
-  background:#ffffffdd;
-  backdrop-filter:blur(10px);
-  box-shadow:0 8px 30px #0002;
+  gap:6px;
+  pointer-events:none;
 }
 
 .dot{
-  width:10px;
-  height:10px;
-  border:0;
+  width:7px;
+  height:7px;
   border-radius:50%;
-  background:#d7c4ca;
-  cursor:pointer;
+  background:#ffffff66;
   transition:.3s;
 }
 
 .dot.active{
-  width:28px;
+  width:23px;
   border-radius:10px;
-  background:#b65b77;
+  background:#fff;
 }
 
-.next{
+.nav-hint{
   position:fixed;
-  right:20px;
-  bottom:20px;
-  z-index:1001;
-  width:48px;
-  height:48px;
+  bottom:22px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1000;
+  padding:8px 15px;
+  border-radius:30px;
+  background:#0006;
+  color:#fff;
+  font-size:11px;
+  pointer-events:none;
+  opacity:.8;
+}
+
+.music-button{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:1200;
+  width:50px;
+  height:50px;
   border:0;
   border-radius:50%;
   background:#b65b77;
-  color:white;
-  font-size:20px;
+  color:#fff;
+  font-size:19px;
   cursor:pointer;
-  box-shadow:0 8px 25px #0003;
-}
-
-.prev{
-  position:fixed;
-  left:20px;
-  bottom:20px;
-  z-index:1001;
-  width:48px;
-  height:48px;
-  border:0;
-  border-radius:50%;
-  background:#ffffffdd;
-  color:#9d526b;
-  font-size:20px;
-  cursor:pointer;
-  box-shadow:0 8px 25px #0002;
+  box-shadow:0 8px 25px #0004;
   display:none;
 }
 
-.music{
-  position:fixed;
-  right:20px;
-  top:20px;
-  z-index:1001;
-  width:48px;
-  height:48px;
-  border:0;
-  border-radius:50%;
-  background:#b65b77;
-  color:white;
-  cursor:pointer;
-  font-size:18px;
-}
+/* =========================
+   THEME DARK
+========================= */
 
-/* DARK */
-
-body.dark .page-two,
-body.dark .page-three{
+body.dark .page{
   background:#201c1f;
-  color:#f7edf0;
+  color:#f8eef1;
 }
 
-body.dark .salutation,
-body.dark .parents,
-body.dark .page-three{
+body.dark .religion-section,
+body.dark .family-section,
+body.dark .share-section{
   background:#181519;
 }
 
 body.dark .religion-card,
-body.dark .event-card,
-body.dark .closing{
+body.dark .event-card{
   background:#292326;
-  border-color:#4a3b40;
+  border-color:#44383d;
 }
 
+body.dark .section-text,
 body.dark .religion-text,
-body.dark .subtitle,
-body.dark .parents p,
-body.dark .event-info,
+body.dark .family-box,
 body.dark .story,
-body.dark .closing-text{
+body.dark .event-row{
   color:#d3c5ca;
 }
 
-body.dark .title,
-body.dark .event-date{
-  color:#f3d9a9;
-}
-
 body.dark .names,
+body.dark .event-date,
 body.dark .religion-name,
-body.dark .footer-names{
+body.dark .thanks-names{
   color:#f3d9a9;
 }
 
-body.dark .maps,
-body.dark .music,
-body.dark .next{
-  background:#9c7747;
+/* =========================
+   SAGE
+========================= */
+
+body.sage .page{
+  background:#fbfdf9;
 }
 
-/* SAGE */
-
-body.sage .page-two,
-body.sage .page-three{
-  background:#f8fbf6;
-}
-
-body.sage .salutation,
-body.sage .parents,
-body.sage .page-three{
-  background:#eef5eb;
-}
-
-body.sage .religion-card,
-body.sage .event-card,
-body.sage .closing{
-  background:#fff;
+body.sage .religion-section,
+body.sage .family-section,
+body.sage .share-section{
+  background:#f1f6ee;
 }
 
 body.sage .names,
 body.sage .religion-name,
-body.sage .footer-names{
+body.sage .event-date,
+body.sage .thanks-names{
   color:#52715c;
 }
 
-body.sage .maps,
-body.sage .music,
-body.sage .next{
-  background:#52715c;
-}
-
-body.sage .cover{
-  background:
-    linear-gradient(#1d302788,#1d302799),
-    linear-gradient(135deg,#dbe5d5,#66816d);
-}
-
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media(max-width:600px){
 
-  .section{
-    padding:60px 18px;
+  section{
+    padding:60px 20px;
   }
 
-  .title{
+  .section-title{
     font-size:29px;
   }
 
@@ -592,25 +639,21 @@ body.sage .cover{
     font-size:30px;
   }
 
-  .religion-card{
+  .religion-card,
+  .event-card{
     padding:25px 18px;
   }
 
-  .cover:before{
-    inset:10px;
+  .cover h1{
+    font-size:52px;
   }
 
-  .guest{
-    margin-top:20px;
+  .cover-model{
+    font-size:50px;
   }
 
-  .next,
-  .prev{
-    bottom:75px;
-  }
-
-  .nav{
-    bottom:18px;
+  .guest-name{
+    font-size:21px;
   }
 }
 </style>
@@ -618,33 +661,52 @@ body.sage .cover{
 
 <body>
 
+<!-- LOADING -->
+
 <div id="loading">
-  <div class="loading-box">
-    <div>💍</div>
-    <p>Menyiapkan undangan...</p>
+  <div class="loader-box">
+    <div class="loader-icon">💍</div>
+    <p>Memuat undangan...</p>
   </div>
 </div>
+
+<!-- ERROR -->
 
 <div id="error">
   <div class="error-box">
-    <div>💌</div>
+    <div class="error-icon">💌</div>
+
     <h2>Undangan Tidak Ditemukan</h2>
-    <p id="errorMessage">Link undangan tidak valid.</p>
-    <a href="index.html">Kembali</a>
+
+    <p id="errorMessage">
+      Link undangan tidak valid.
+    </p>
+
+    <a href="index.html">
+      Kembali
+    </a>
   </div>
 </div>
 
+<!-- APP -->
+
 <div id="app">
+
+  <div class="page-indicator">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
 
   <div class="slider">
 
-    <div class="pages" id="pages">
+    <!-- =====================
+         HALAMAN 1
+    ====================== -->
 
-      <!-- =================================================
-           HALAMAN 1
-      ================================================== -->
+    <div class="page active" id="page1">
 
-      <section class="page cover" id="page1">
+      <div class="cover" id="cover">
 
         <div class="cover-content">
 
@@ -652,327 +714,356 @@ body.sage .cover{
             THE WEDDING OF
           </div>
 
+          <div
+            class="guest-box"
+            id="guestBox"
+            style="display:none;"
+          >
+            <div class="guest-label">
+              Kepada Yth.
+            </div>
+
+            <div
+              class="guest-name"
+              id="guestName"
+            >
+              Tamu Undangan
+            </div>
+          </div>
+
+          <div
+            class="cover-model"
+            id="coverModel"
+          >
+            💑
+          </div>
+
           <h1>
             <span id="coverGroom">Muhajirin</span>
-            <span class="and">&</span>
+
+            <span class="cover-amp">&</span>
+
             <span id="coverBride">Nur</span>
           </h1>
 
-          <div class="cover-date" id="coverDate">
+          <div
+            class="cover-date"
+            id="coverDate"
+          >
             -
           </div>
 
-          <div class="religion-cover" id="coverReligion">
-            Islam
+          <div
+            class="cover-religion"
+            id="coverReligion"
+          >
+            Undangan Pernikahan
           </div>
 
-          <div class="guest">
-            <small>Kepada Yth.</small>
-            <strong id="guestName">
-              Bapak/Ibu/Saudara/i
-            </strong>
-          </div>
-
-          <button class="open-btn" id="openBtn">
+          <button
+            class="open-button"
+            id="openButton"
+          >
             💌 Buka Undangan
           </button>
 
+          <small class="cover-hint">
+            Ketuk tombol untuk membuka undangan
+          </small>
+
         </div>
 
-      </section>
+      </div>
+
+    </div>
 
 
-      <!-- =================================================
-           HALAMAN 2
-      ================================================== -->
+    <!-- =====================
+         HALAMAN 2
+    ====================== -->
 
-      <section class="page page-two">
+    <div class="page" id="page2">
 
-        <div class="inner">
+      <div class="page-inner">
 
-          <div class="section salutation">
+        <section>
 
-            <div class="eyebrow">
-              SALAM & DOA
-            </div>
-
-            <h2 class="title">
-              Dengan Penuh Syukur
-            </h2>
-
-            <div class="religion-card">
-
-              <div class="religion-icon" id="religionIcon">
-                ☪️
-              </div>
-
-              <div class="religion-name" id="religionName">
-                Islam
-              </div>
-
-              <div class="religion-text" id="religionGreeting">
-                -
-              </div>
-
-            </div>
-
-            <p class="subtitle" id="opening">
-              Dengan penuh rasa syukur, kami
-              mengundang Bapak/Ibu/Saudara/i
-              untuk hadir dan memberikan doa restu
-              pada acara pernikahan kami.
-            </p>
-
+          <div class="section-kicker">
+            Assalamu'alaikum
           </div>
 
+          <h2 class="section-title">
+            💌 Salam & Doa
+          </h2>
 
-          <div class="section couple">
+          <div class="religion-card">
 
-            <div class="eyebrow">
-              MEMPELAI
-            </div>
-
-            <h2 class="title">
-              Kedua Mempelai
-            </h2>
-
-            <img
-              id="couplePhoto"
-              class="photo"
-              src=""
-              alt="Foto Mempelai"
-              style="display:none"
+            <div
+              class="religion-icon"
+              id="religionIcon"
             >
-
-            <div class="names">
-
-              <span id="groomName">
-                Muhajirin
-              </span>
-
-              <div class="amp">&</div>
-
-              <span id="brideName">
-                Nur
-              </span>
-
+              ☪️
             </div>
 
-            <div class="parents">
-
-              <h3>
-                👨‍👩‍👧 Keluarga Mempelai
-              </h3>
-
-              <p id="parents">
-                -
-              </p>
-
+            <div
+              class="religion-name"
+              id="religionName"
+            >
+              Islam
             </div>
+
+            <div
+              class="religion-text"
+              id="religionGreeting"
+            ></div>
 
           </div>
 
-        </div>
-
-      </section>
+        </section>
 
 
-      <!-- =================================================
-           HALAMAN 3
-      ================================================== -->
+        <section>
 
-      <section class="page page-three">
-
-        <div class="inner">
-
-          <div class="section center">
-
-            <div class="eyebrow">
-              WAKTU & TEMPAT
-            </div>
-
-            <h2 class="title">
-              Detail Acara
-            </h2>
-
-            <div class="event-card">
-
-              <div class="event-icon">
-                💍
-              </div>
-
-              <div class="event-date" id="eventDate">
-                -
-              </div>
-
-              <div class="event-info">
-
-                <div>
-                  🕐 <span id="eventTime">-</span>
-                </div>
-
-                <div>
-                  📍 <span id="location">-</span>
-                </div>
-
-              </div>
-
-              <div id="mapsContainer">
-                <a
-                  id="mapsButton"
-                  class="action maps"
-                  href="#"
-                  target="_blank"
-                  rel="noopener"
-                  style="display:none"
-                >
-                  📍 Buka Google Maps
-                </a>
-              </div>
-
-            </div>
-
+          <div class="section-kicker">
+            The Bride & Groom
           </div>
 
+          <h2 class="section-title">
+            💍 Mempelai
+          </h2>
+
+          <div class="names">
+
+            <span id="groomName">
+              Muhajirin
+            </span>
+
+            <div class="amp">
+              &
+            </div>
+
+            <span id="brideName">
+              Nur
+            </span>
+
+          </div>
 
           <div
-            class="section center"
-            id="storySection"
+            class="photo-wrap"
+            id="photoWrap"
+            style="display:none;"
           >
-
-            <div class="eyebrow">
-              OUR STORY
-            </div>
-
-            <h2 class="title">
-              ❤️ Cerita Kami
-            </h2>
-
-            <p class="story" id="story">
-              -
-            </p>
-
+            <img
+              id="coverPhoto"
+              alt="Foto Mempelai"
+            >
           </div>
 
+          <p
+            class="section-text"
+            id="opening"
+          ></p>
 
-          <div class="section center">
+        </section>
 
-            <div class="eyebrow">
-              BERBAGI KEBAHAGIAAN
+
+        <section>
+
+          <div class="section-kicker">
+            Save The Date
+          </div>
+
+          <h2 class="section-title">
+            💍 Detail Acara
+          </h2>
+
+          <div class="event-card">
+
+            <div class="event-icon">
+              📅
             </div>
 
-            <h2 class="title">
-              Bagikan Undangan
-            </h2>
-
-            <p class="subtitle">
-              Silakan bagikan undangan ini
-              kepada keluarga dan teman-teman.
-            </p>
-
-            <br>
-
-            <button
-              class="action share"
-              id="shareButton"
+            <div
+              class="event-date"
+              id="eventDate"
             >
-              📤 Bagikan Undangan
-            </button>
+              -
+            </div>
 
-            <br>
+            <div class="event-row">
+              🕐
+              <span id="eventTime">-</span>
+            </div>
+
+            <div class="event-row">
+              📍
+              <span id="location">-</span>
+            </div>
 
             <a
-              class="action whatsapp"
-              id="waButton"
               href="#"
+              id="mapsButton"
+              class="maps-button"
               target="_blank"
               rel="noopener"
+              style="display:none;"
             >
-              💬 Bagikan ke WhatsApp
+              📍 Buka Google Maps
             </a>
 
           </div>
 
+        </section>
 
-          <div class="section closing">
 
-            <div class="eyebrow">
-              TERIMA KASIH
-            </div>
+        <section class="family-section">
 
-            <h2 class="title">
-              Semoga Menjadi Berkah ❤️
-            </h2>
+          <div class="section-kicker">
+            Keluarga
+          </div>
 
-            <p
-              class="closing-text"
-              id="closingText"
-            >
-              -
-            </p>
+          <h2 class="section-title">
+            👨‍👩‍👧 Keluarga Mempelai
+          </h2>
 
-            <div class="footer-names">
+          <div
+            class="family-box"
+            id="parents"
+          ></div>
 
-              <span id="footerGroom">
-                Muhajirin
-              </span>
+        </section>
 
-              &
 
-              <span id="footerBride">
-                Nur
-              </span>
+        <section>
 
-            </div>
+          <div class="section-kicker">
+            Our Journey
+          </div>
 
-            <div style="margin-top:35px;color:#a48c94">
-              <strong>UndanganKu</strong>
-              <br>
-              <small>
-                Dibuat dengan ❤️ untuk hari istimewa.
-              </small>
-            </div>
+          <h2 class="section-title">
+            ❤️ Cerita Kami
+          </h2>
+
+          <div
+            class="story"
+            id="story"
+          ></div>
+
+        </section>
+
+        <div style="height:80px;"></div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================
+         HALAMAN 3
+    ====================== -->
+
+    <div class="page" id="page3">
+
+      <div class="page-inner">
+
+        <section class="thanks">
+
+          <div class="section-kicker">
+            With Love
+          </div>
+
+          <h2 class="section-title">
+            Terima Kasih ❤️
+          </h2>
+
+          <div
+            class="section-text"
+            id="closingText"
+          ></div>
+
+          <div class="thanks-names">
+
+            <span id="footerGroom">
+              Muhajirin
+            </span>
+
+            &
+
+            <span id="footerBride">
+              Nur
+            </span>
 
           </div>
 
-        </div>
+        </section>
 
-      </section>
+
+        <section class="share-section">
+
+          <div class="section-kicker">
+            Share The Love
+          </div>
+
+          <h2 class="section-title">
+            Bagikan Undangan
+          </h2>
+
+          <p class="section-text">
+            Silakan bagikan undangan ini
+            kepada keluarga dan teman-teman.
+          </p>
+
+          <button
+            class="share-button"
+            id="shareButton"
+          >
+            📤 Bagikan Undangan
+          </button>
+
+          <br>
+
+          <a
+            class="wa-button"
+            id="waButton"
+            href="#"
+            target="_blank"
+            rel="noopener"
+          >
+            💬 Bagikan ke WhatsApp
+          </a>
+
+        </section>
+
+
+        <footer>
+
+          <h2>
+            UndanganKu
+          </h2>
+
+          <p>
+            Dibuat dengan ❤️ untuk hari istimewa.
+          </p>
+
+          <p style="margin-top:10px;">
+            <span id="footerYear">
+              2026
+            </span>
+          </p>
+
+        </footer>
+
+      </div>
 
     </div>
 
   </div>
 
 
-  <!-- NAVIGATION -->
-
-  <button
-    class="prev"
-    id="prevButton"
-  >
-    ‹
-  </button>
-
-  <div class="nav">
-
-    <button class="dot active" data-page="0"></button>
-    <button class="dot" data-page="1"></button>
-    <button class="dot" data-page="2"></button>
-
-  </div>
-
-  <button
-    class="next"
-    id="nextButton"
-  >
-    ›
-  </button>
-
-
   <!-- MUSIC -->
 
   <button
-    class="music"
+    class="music-button"
     id="musicButton"
     title="Musik"
   >
@@ -982,7 +1073,7 @@ body.sage .cover{
 </div>
 
 <audio
-  id="musicAudio"
+  id="music"
   loop
   preload="auto"
 ></audio>
@@ -997,55 +1088,70 @@ import {
   query,
   where,
   getDocs
-} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 
-/* =====================================================
+/* =========================
    ELEMENT
-===================================================== */
+========================= */
 
 const loading =
-  document.getElementById("loading");
+document.getElementById("loading");
 
 const errorBox =
-  document.getElementById("error");
-
-const app =
-  document.getElementById("app");
+document.getElementById("error");
 
 const errorMessage =
-  document.getElementById("errorMessage");
+document.getElementById("errorMessage");
+
+const app =
+document.getElementById("app");
 
 const pages =
-  document.getElementById("pages");
-
-const nextButton =
-  document.getElementById("nextButton");
-
-const prevButton =
-  document.getElementById("prevButton");
+[
+  document.getElementById("page1"),
+  document.getElementById("page2"),
+  document.getElementById("page3")
+];
 
 const dots =
-  document.querySelectorAll(".dot");
+document.querySelectorAll(".dot");
 
-const musicAudio =
-  document.getElementById("musicAudio");
+const music =
+document.getElementById("music");
 
 const musicButton =
-  document.getElementById("musicButton");
+document.getElementById("musicButton");
 
 
-/* =====================================================
-   AGAMA
-===================================================== */
+/* =========================
+   PARAMETER
+========================= */
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const slug =
+params.get("slug");
+
+const guest =
+params.get("to");
+
+
+/* =========================
+   RELIGION
+========================= */
 
 const religionData = {
 
-  islam:{
-    name:"Islam",
-    icon:"☪️",
+islam:{
+  name:"Islam",
+  icon:"☪️",
 
-    greeting:
+  greeting:
 `Bismillahirrahmanirrahim
 
 Assalamu'alaikum Warahmatullahi Wabarakatuh.
@@ -1060,7 +1166,7 @@ sebagai keluarga yang sakinah, mawaddah,
 wa rahmah serta senantiasa dilimpahkan
 keberkahan dan kebahagiaan.`,
 
-    closing:
+  closing:
 `Semoga Allah SWT memberikan keberkahan
 kepada kedua mempelai dan menyatukan
 keduanya dalam kebaikan.
@@ -1068,14 +1174,13 @@ keduanya dalam kebaikan.
 Jazakumullahu khairan katsiran.
 
 Wassalamu'alaikum Warahmatullahi Wabarakatuh.`
-  },
+},
 
+kristen:{
+  name:"Kristen",
+  icon:"✝️",
 
-  kristen:{
-    name:"Kristen",
-    icon:"✝️",
-
-    greeting:
+  greeting:
 `Salam Kasih.
 
 Dengan penuh sukacita dan ucapan syukur
@@ -1087,21 +1192,20 @@ Kiranya kasih dan penyertaan Tuhan
 senantiasa menyertai kehidupan
 rumah tangga kami.`,
 
-    closing:
+  closing:
 `Kiranya Tuhan memberkati pernikahan kami,
 menuntun setiap langkah kehidupan kami,
 dan memenuhi rumah tangga kami
 dengan kasih, damai, dan sukacita.
 
 Tuhan memberkati.`
-  },
+},
 
+katolik:{
+  name:"Katolik",
+  icon:"✝️",
 
-  katolik:{
-    name:"Katolik",
-    icon:"✝️",
-
-    greeting:
+  greeting:
 `Dalam nama Bapa dan Putra dan Roh Kudus.
 
 Dengan penuh syukur atas kasih dan penyertaan
@@ -1112,20 +1216,19 @@ dari perayaan pernikahan kami.
 Semoga rahmat Tuhan selalu menyertai
 perjalanan hidup dan keluarga kami.`,
 
-    closing:
+  closing:
 `Semoga Tuhan memberkati keluarga kami,
 memberikan kasih, kedamaian,
 dan kesetiaan sepanjang kehidupan kami.
 
 Amin.`
-  },
+},
 
+hindu:{
+  name:"Hindu",
+  icon:"🕉️",
 
-  hindu:{
-    name:"Hindu",
-    icon:"🕉️",
-
-    greeting:
+  greeting:
 `Om Swastyastu.
 
 Dengan memohon anugerah dan tuntunan
@@ -1137,21 +1240,20 @@ Semoga kehidupan rumah tangga kami
 senantiasa diliputi keharmonisan,
 kedamaian dan kebahagiaan.`,
 
-    closing:
+  closing:
 `Semoga Ida Sang Hyang Widhi Wasa
 senantiasa memberikan tuntunan,
 keselamatan, keharmonisan,
 dan kebahagiaan dalam kehidupan kami.
 
 Om Santih, Santih, Santih Om.`
-  },
+},
 
+buddha:{
+  name:"Buddha",
+  icon:"☸️",
 
-  buddha:{
-    name:"Buddha",
-    icon:"☸️",
-
-    greeting:
+  greeting:
 `Namo Buddhaya.
 
 Dengan penuh kebahagiaan dan rasa syukur,
@@ -1163,753 +1265,927 @@ Semoga kehidupan rumah tangga kami
 dilandasi cinta kasih, kebijaksanaan,
 kesetiaan, dan keharmonisan.`,
 
-    closing:
+  closing:
 `Semoga kami senantiasa mengembangkan
 cinta kasih, kebijaksanaan,
 kesabaran, dan pengertian
 dalam menjalani kehidupan bersama.
 
 Semoga semua makhluk berbahagia.`
-  }
+},
+
+konghucu:{
+  name:"Konghucu",
+  icon:"🧧",
+
+  greeting:
+`Salam Kebajikan.
+
+Dengan penuh rasa syukur,
+kami mengundang Bapak/Ibu/Saudara/i
+untuk hadir dan memberikan doa serta restu
+atas pernikahan kami.
+
+Semoga keluarga yang dibangun
+senantiasa dipenuhi keharmonisan,
+kebajikan, kasih sayang dan kedamaian.`,
+
+  closing:
+`Semoga keluarga kami senantiasa
+diliputi kebajikan, keharmonisan,
+kasih sayang, saling menghormati
+dan kedamaian.`
+},
+
+umum:{
+  name:"Umum",
+  icon:"🤍",
+
+  greeting:
+`Dengan penuh kebahagiaan,
+kami mengundang Bapak/Ibu/Saudara/i
+untuk hadir dan memberikan doa serta restu
+atas pernikahan kami.
+
+Kehadiran dan doa restu Anda
+akan menjadi kebahagiaan yang sangat berarti
+bagi kami.`,
+
+  closing:
+`Terima kasih atas doa, perhatian,
+dan kehadiran Anda.
+
+Semoga kebahagiaan dan kebaikan
+senantiasa menyertai kita semua.`
+}
 
 };
 
 
-/* =====================================================
-   PARAMETER SLUG & TAMU
-===================================================== */
+/* =========================
+   MODEL COVER
+========================= */
 
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
+const models = {
 
-const slug =
-  params.get("slug");
+romantis:"💑",
 
-const guest =
-  params.get("to") ||
-  params.get("guest") ||
-  "Bapak/Ibu/Saudara/i";
+boneka:"🧸💍🧸",
 
+tni:"🪖💍👰",
 
-/* =====================================================
-   ERROR
-===================================================== */
+polisi:"👮💍👮‍♀️",
 
-function showError(text){
+agamis:"🕌💍🤲",
 
-  loading.style.display="none";
-  app.style.display="none";
-  errorBox.style.display="flex";
+formal:"🤵💍👰",
 
-  errorMessage.textContent=text;
-}
+modern:"🕴️💍👗",
+
+foto:"✨🖼️✨"
+
+};
 
 
-/* =====================================================
-   FORMAT TANGGAL
-===================================================== */
+/* =========================
+   BACKGROUND
+========================= */
 
-function formatDate(value){
+const backgrounds = {
 
-  const date =
-    new Date(value+"T00:00:00");
+rose:
+"linear-gradient(#0007,#0007),linear-gradient(135deg,#f8ccd8,#9e536c)",
 
-  return date.toLocaleDateString(
-    "id-ID",
-    {
-      weekday:"long",
-      day:"numeric",
-      month:"long",
-      year:"numeric"
-    }
-  );
-}
+gold:
+"linear-gradient(#0007,#0007),linear-gradient(135deg,#30261f,#b28a55)",
 
+garden:
+"linear-gradient(#0005,#0005),linear-gradient(135deg,#c9ddc4,#54715c)",
 
-/* =====================================================
-   SET TEXT
-===================================================== */
+floral:
+"linear-gradient(#0005,#0005),linear-gradient(135deg,#f5d9e2,#a9687c)",
 
-function setText(id,value){
+islami:
+"linear-gradient(#0006,#0006),linear-gradient(135deg,#183c36,#b38a4b)",
 
-  const el =
-    document.getElementById(id);
+military:
+"linear-gradient(#0007,#0007),linear-gradient(135deg,#263326,#65745a)",
 
-  if(el){
-    el.textContent=value ?? "";
-  }
-}
+police:
+"linear-gradient(#0007,#0007),linear-gradient(135deg,#172b48,#49739d)",
+
+dark:
+"linear-gradient(#0008,#0008),linear-gradient(135deg,#171417,#65513b)"
+
+};
 
 
-/* =====================================================
-   LOAD
-===================================================== */
+/* =========================
+   START
+========================= */
 
 if(!slug){
 
-  showError(
-    "Link undangan tidak memiliki slug."
-  );
+showError(
+"Link undangan tidak memiliki slug."
+);
 
 }else{
 
-  loadInvitation(slug);
+loadInvitation(slug);
 
 }
 
+
+/* =========================
+   LOAD FIRESTORE
+========================= */
 
 async function loadInvitation(slug){
 
-  try{
+try{
 
-    const q =
-      query(
-        collection(
-          db,
-          "invitations"
-        ),
-        where(
-          "slug",
-          "==",
-          slug
-        )
-      );
+const q =
+query(
+collection(db,"invitations"),
+where("slug","==",slug)
+);
 
-    const snapshot =
-      await getDocs(q);
+const snapshot =
+await getDocs(q);
 
-    if(snapshot.empty){
+if(snapshot.empty){
 
-      showError(
-        "Undangan dengan link \""+
-        slug+
-        "\" tidak ditemukan."
-      );
+showError(
+`Undangan "${slug}" tidak ditemukan.`
+);
 
-      return;
-    }
+return;
 
-    const data =
-      snapshot.docs[0].data();
+}
 
-    render(data);
+const data =
+snapshot.docs[0].data();
 
-  }catch(error){
+renderInvitation(data);
 
-    console.error(error);
+}catch(error){
 
-    showError(
-      "Gagal memuat undangan: "+
-      error.message
-    );
+console.error(error);
 
-  }
+showError(
+"Gagal memuat undangan. Periksa koneksi Firebase."
+);
+
+}
 
 }
 
 
-/* =====================================================
+/* =========================
    RENDER
-===================================================== */
+========================= */
 
-function render(data){
+function renderInvitation(data){
 
-  const groom =
-    data.groomName ||
-    "Mempelai Pria";
+const groom =
+data.groomName ||
+"Muhajirin";
 
-  const bride =
-    data.brideName ||
-    "Mempelai Wanita";
+const bride =
+data.brideName ||
+"Nur";
 
-  const religion =
-    String(
-      data.religion ||
-      "islam"
-    ).toLowerCase();
+const religionKey =
+String(
+data.religion || "islam"
+).toLowerCase();
 
-  const info =
-    religionData[religion] ||
-    religionData.islam;
+const religion =
+religionData[religionKey] ||
+religionData.islam;
 
 
-  document.title =
-    groom+
-    " & "+
-    bride+
-    " — Undangan Pernikahan";
+/* TITLE */
 
+document.title =
+`${groom} & ${bride} — Undangan Pernikahan`;
 
-  /* NAMA */
 
-  setText("coverGroom",groom);
-  setText("coverBride",bride);
+/* NAMA */
 
-  setText("groomName",groom);
-  setText("brideName",bride);
+setText("coverGroom",groom);
+setText("coverBride",bride);
 
-  setText("footerGroom",groom);
-  setText("footerBride",bride);
+setText("groomName",groom);
+setText("brideName",bride);
 
+setText("footerGroom",groom);
+setText("footerBride",bride);
 
-  /* TAMU */
 
-  setText(
-    "guestName",
-    guest
-  );
+/* TAMU */
 
+if(guest){
 
-  /* AGAMA */
+document.getElementById(
+"guestBox"
+).style.display="block";
 
-  setText(
-    "religionIcon",
-    info.icon
-  );
-
-  setText(
-    "religionName",
-    info.name
-  );
-
-  setText(
-    "religionGreeting",
-    info.greeting
-  );
-
-  setText(
-    "coverReligion",
-    info.name
-  );
-
-  setText(
-    "closingText",
-    info.closing
-  );
-
-
-  /* OPENING */
-
-  if(data.opening){
-
-    setText(
-      "opening",
-      data.opening
-    );
-
-  }
-
-
-  /* TANGGAL */
-
-  if(data.eventDate){
-
-    const date =
-      formatDate(
-        data.eventDate
-      );
-
-    setText(
-      "coverDate",
-      date
-    );
-
-    setText(
-      "eventDate",
-      date
-    );
-
-  }
-
-
-  /* JAM */
-
-  setText(
-    "eventTime",
-    data.eventTime || "-"
-  );
-
-
-  /* LOKASI */
-
-  setText(
-    "location",
-    data.location || "-"
-  );
-
-
-  /* ORANG TUA */
-
-  if(data.parents){
-
-    setText(
-      "parents",
-      data.parents
-    );
-
-  }else{
-
-    document
-      .querySelector(".parents")
-      .style.display="none";
-
-  }
-
-
-  /* CERITA */
-
-  if(data.story){
-
-    setText(
-      "story",
-      data.story
-    );
-
-  }else{
-
-    document
-      .getElementById(
-        "storySection"
-      )
-      .style.display="none";
-
-  }
-
-
-  /* FOTO */
-
-  if(data.image){
-
-    const photo =
-      document.getElementById(
-        "couplePhoto"
-      );
-
-    photo.src=data.image;
-    photo.style.display="inline-block";
-
-    document.getElementById(
-      "page1"
-    ).style.backgroundImage=
-      `linear-gradient(#170c1080,#170c1090),
-       url("${data.image}")`;
-
-  }
-
-
-  /* MAPS */
-
-  if(data.maps){
-
-    const maps =
-      document.getElementById(
-        "mapsButton"
-      );
-
-    maps.href=data.maps;
-    maps.style.display="inline-block";
-
-  }
-
-
-  /* TEMA */
-
-  document.body.classList.remove(
-    "dark",
-    "sage"
-  );
-
-  if(data.theme==="dark"){
-
-    document.body.classList.add(
-      "dark"
-    );
-
-  }
-
-  if(data.theme==="sage"){
-
-    document.body.classList.add(
-      "sage"
-    );
-
-  }
-
-
-  /* MUSIK */
-
-  if(data.music){
-
-    musicAudio.src=data.music;
-
-  }
-
-
-  /* WHATSAPP */
-
-  const whatsappText =
-`Assalamu'alaikum / Salam sejahtera.
-
-Kami mengundang Anda untuk hadir
-dalam acara pernikahan:
-
-${groom} & ${bride}
-
-${data.eventDate
-  ? formatDate(data.eventDate)
-  : ""}
-
-${data.location || ""}
-
-Silakan buka undangan:
-${window.location.href}`;
-
-
-  document.getElementById(
-    "waButton"
-  ).href =
-    "https://wa.me/?text="+
-    encodeURIComponent(
-      whatsappText
-    );
-
-
-  loading.style.display="none";
-  app.style.display="block";
+setText(
+"guestName",
+decodeURIComponent(
+guest.replace(/\+/g," ")
+)
+);
 
 }
 
 
-/* =====================================================
-   SWIPE / TAP
-===================================================== */
+/* AGAMA */
+
+setText(
+"religionIcon",
+religion.icon
+);
+
+setText(
+"religionName",
+religion.name
+);
+
+setText(
+"coverReligion",
+religion.name
+);
+
+setText(
+"religionGreeting",
+religion.greeting
+);
+
+setText(
+"closingText",
+data.closing ||
+religion.closing
+);
+
+
+/* OPENING */
+
+setText(
+"opening",
+data.opening ||
+"Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu."
+);
+
+
+/* TANGGAL */
+
+if(data.eventDate){
+
+const date =
+formatDate(data.eventDate);
+
+setText(
+"coverDate",
+date
+);
+
+setText(
+"eventDate",
+date
+);
+
+}else{
+
+setText(
+"coverDate",
+"Save The Date"
+);
+
+}
+
+
+/* JAM */
+
+setText(
+"eventTime",
+data.eventTime || "-"
+);
+
+
+/* LOKASI */
+
+setText(
+"location",
+data.location || "-"
+);
+
+
+/* MAPS */
+
+if(data.maps){
+
+const mapsButton =
+document.getElementById(
+"mapsButton"
+);
+
+mapsButton.href =
+data.maps;
+
+mapsButton.style.display =
+"inline-block";
+
+}
+
+
+/* PARENTS */
+
+if(data.parents){
+
+setText(
+"parents",
+data.parents
+);
+
+}else{
+
+document
+.querySelector(".family-section")
+.style.display="none";
+
+}
+
+
+/* STORY */
+
+if(data.story){
+
+setText(
+"story",
+data.story
+);
+
+}else{
+
+document
+.querySelector("#story")
+.parentElement
+.style.display="none";
+
+}
+
+
+/* PHOTO */
+
+if(data.image){
+
+const photoWrap =
+document.getElementById(
+"photoWrap"
+);
+
+const photo =
+document.getElementById(
+"coverPhoto"
+);
+
+photo.src =
+data.image;
+
+photoWrap.style.display =
+"block";
+
+}
+
+
+/* MODEL */
+
+const model =
+data.model ||
+data.coverModel ||
+"romantis";
+
+setText(
+"coverModel",
+models[model] ||
+models.romantis
+);
+
+
+/* BACKGROUND */
+
+applyBackground(
+data,
+document.getElementById("cover")
+);
+
+
+/* THEME */
+
+applyTheme(
+data.theme || "rose"
+);
+
+
+/* MUSIC */
+
+if(data.music){
+
+music.src =
+data.music;
+
+musicButton.style.display =
+"block";
+
+}
+
+
+/* WHATSAPP */
+
+const currentUrl =
+window.location.href;
+
+const shareText =
+`💍 Undangan Pernikahan ${groom} & ${bride}
+
+Kami mengundang Anda untuk hadir dan memberikan doa restu.
+
+Buka undangan:
+${currentUrl}`;
+
+document.getElementById(
+"waButton"
+).href =
+"https://wa.me/?text=" +
+encodeURIComponent(shareText);
+
+
+/* SHARE */
+
+document
+.getElementById("shareButton")
+.addEventListener(
+"click",
+async()=>{
+
+if(
+navigator.share
+){
+
+try{
+
+await navigator.share({
+title:`Undangan ${groom} & ${bride}`,
+text:shareText,
+url:currentUrl
+});
+
+}catch(e){}
+
+}else{
+
+try{
+
+await navigator.clipboard.writeText(
+currentUrl
+);
+
+alert(
+"Link undangan berhasil disalin."
+);
+
+}catch(e){
+
+prompt(
+"Salin link undangan:",
+currentUrl
+);
+
+}
+
+}
+
+});
+
+
+/* SHOW */
+
+loading.style.display="none";
+
+app.style.display="block";
+
+document.body.classList.add(
+"ready"
+);
+
+}
+
+
+/* =========================
+   BACKGROUND
+========================= */
+
+function applyBackground(data,cover){
+
+const image =
+data.image;
+
+const backgroundKey =
+String(
+data.background ||
+data.coverBackground ||
+"rose"
+).toLowerCase();
+
+
+let bg =
+backgrounds[backgroundKey] ||
+backgrounds.rose;
+
+
+if(
+data.backgroundImage
+){
+
+bg =
+`linear-gradient(#0007,#0007),url("${data.backgroundImage}")`;
+
+}else if(
+image &&
+(
+data.model==="foto" ||
+data.model==="custom" ||
+data.coverModel==="foto"
+)
+){
+
+bg =
+`linear-gradient(#0007,#0007),url("${image}")`;
+
+}
+
+
+cover.style.background =
+bg;
+
+cover.style.backgroundSize =
+"cover";
+
+cover.style.backgroundPosition =
+"center";
+
+}
+
+
+/* =========================
+   THEME
+========================= */
+
+function applyTheme(theme){
+
+document.body.classList.remove(
+"dark",
+"sage"
+);
+
+if(theme==="dark"){
+
+document.body.classList.add(
+"dark"
+);
+
+}else if(theme==="sage"){
+
+document.body.classList.add(
+"sage"
+);
+
+}
+
+}
+
+
+/* =========================
+   PAGE NAVIGATION
+========================= */
 
 let currentPage=0;
 
 function goToPage(index){
 
-  if(index<0) index=0;
-  if(index>2) index=2;
+if(index<0) index=0;
 
-  currentPage=index;
+if(index>2) index=2;
 
-  pages.style.transform=
-    `translateX(-${index*33.333333}%)`;
+if(index===currentPage)
+return;
 
-  dots.forEach(
-    (dot,i)=>{
-      dot.classList.toggle(
-        "active",
-        i===index
-      );
-    }
-  );
+pages.forEach(
+(page,i)=>{
 
-  prevButton.style.display =
-    index===0
-      ? "none"
-      : "block";
+page.classList.remove(
+"active",
+"prev"
+);
 
-  nextButton.textContent =
-    index===2
-      ? "⌂"
-      : "›";
+if(i===index){
+
+page.classList.add(
+"active"
+);
+
+}
+
+if(i<index){
+
+page.classList.add(
+"prev"
+);
+
+}
+
+}
+);
+
+dots.forEach(
+(dot,i)=>{
+
+dot.classList.toggle(
+"active",
+i===index
+);
+
+}
+);
+
+currentPage=index;
 
 }
 
 
-/* DOT */
-
-dots.forEach(
-  dot=>{
-
-    dot.addEventListener(
-      "click",
-      ()=>{
-        goToPage(
-          Number(
-            dot.dataset.page
-          )
-        );
-      }
-    );
-
-  }
-);
-
-
-/* NEXT */
-
-nextButton.addEventListener(
-  "click",
-  ()=>{
-
-    if(currentPage===2){
-
-      goToPage(0);
-
-    }else{
-
-      goToPage(
-        currentPage+1
-      );
-
-    }
-
-  }
-);
-
-
-/* PREVIOUS */
-
-prevButton.addEventListener(
-  "click",
-  ()=>{
-    goToPage(
-      currentPage-1
-    );
-  }
-);
-
-
-/* =====================================================
-   TOUCH SWIPE
-===================================================== */
-
-let startX=0;
-let startY=0;
-
-document.addEventListener(
-  "touchstart",
-  e=>{
-
-    startX=
-      e.changedTouches[0].screenX;
-
-    startY=
-      e.changedTouches[0].screenY;
-
-  },
-  {passive:true}
-);
-
-
-document.addEventListener(
-  "touchend",
-  e=>{
-
-    const endX=
-      e.changedTouches[0].screenX;
-
-    const endY=
-      e.changedTouches[0].screenY;
-
-    const diffX=
-      endX-startX;
-
-    const diffY=
-      endY-startY;
-
-    if(
-      Math.abs(diffX)>60 &&
-      Math.abs(diffX)>Math.abs(diffY)
-    ){
-
-      if(diffX<0){
-
-        goToPage(
-          Math.min(
-            currentPage+1,
-            2
-          )
-        );
-
-      }else{
-
-        goToPage(
-          Math.max(
-            currentPage-1,
-            0
-          )
-        );
-
-      }
-
-    }
-
-  },
-  {passive:true}
-);
-
-
-/* =====================================================
-   OPEN UNDANGAN
-===================================================== */
+/* =========================
+   OPEN
+========================= */
 
 document
-  .getElementById("openBtn")
-  .addEventListener(
-    "click",
-    async ()=>{
+.getElementById("openButton")
+.addEventListener(
+"click",
+async()=>{
 
-      goToPage(1);
+goToPage(1);
 
-      document.body.style.overflow="hidden";
+startMusic();
 
-      /* musik */
-
-      if(musicAudio.src){
-
-        try{
-
-          await musicAudio.play();
-
-          musicButton.textContent="🔊";
-
-        }catch(e){
-
-          musicButton.textContent="🔇";
-
-        }
-
-      }
-
-    }
-  );
+}
+);
 
 
-/* =====================================================
+/* =========================
+   TAP PAGE
+========================= */
+
+pages[1].addEventListener(
+"click",
+e=>{
+
+if(
+e.target.closest("a,button")
+)return;
+
+goToPage(2);
+
+}
+);
+
+pages[2].addEventListener(
+"click",
+e=>{
+
+if(
+e.target.closest("a,button")
+)return;
+
+}
+);
+
+
+/* =========================
+   SWIPE
+========================= */
+
+let touchStartX=0;
+let touchStartY=0;
+
+document.addEventListener(
+"touchstart",
+e=>{
+
+touchStartX =
+e.changedTouches[0].screenX;
+
+touchStartY =
+e.changedTouches[0].screenY;
+
+},
+{passive:true}
+);
+
+document.addEventListener(
+"touchend",
+e=>{
+
+const x =
+e.changedTouches[0].screenX;
+
+const y =
+e.changedTouches[0].screenY;
+
+const diffX =
+x-touchStartX;
+
+const diffY =
+y-touchStartY;
+
+if(
+Math.abs(diffX)<60 ||
+Math.abs(diffX)<Math.abs(diffY)
+)return;
+
+if(diffX<0){
+
+goToPage(
+Math.min(2,currentPage+1)
+);
+
+}else{
+
+goToPage(
+Math.max(0,currentPage-1)
+);
+
+}
+
+},
+{passive:true}
+);
+
+
+/* =========================
    MUSIC
-===================================================== */
+========================= */
+
+let musicPlaying=false;
+
+async function startMusic(){
+
+if(!music.src)
+return;
+
+try{
+
+await music.play();
+
+musicPlaying=true;
+
+musicButton.textContent="🔊";
+
+}catch(error){
+
+musicPlaying=false;
+
+musicButton.textContent="🔇";
+
+}
+
+}
+
 
 musicButton.addEventListener(
-  "click",
-  async ()=>{
+"click",
+async()=>{
 
-    if(!musicAudio.src){
+if(!music.src)
+return;
 
-      alert(
-        "Musik belum diatur pada undangan."
-      );
+if(musicPlaying){
 
-      return;
-    }
+music.pause();
 
-    if(musicAudio.paused){
+musicPlaying=false;
 
-      try{
+musicButton.textContent="🔇";
 
-        await musicAudio.play();
+}else{
 
-        musicButton.textContent="🔊";
+try{
 
-      }catch(e){}
+await music.play();
 
-    }else{
+musicPlaying=true;
 
-      musicAudio.pause();
+musicButton.textContent="🔊";
 
-      musicButton.textContent="🔇";
+}catch(error){}
 
-    }
+}
 
-  }
+});
+
+
+/* =========================
+   FORMAT DATE
+========================= */
+
+function formatDate(value){
+
+if(!value)
+return "-";
+
+
+let date;
+
+
+/*
+Firebase Timestamp
+*/
+
+if(
+typeof value==="object" &&
+value.seconds
+){
+
+date =
+new Date(
+value.seconds*1000
 );
 
+}else{
 
-/* =====================================================
-   SHARE
-===================================================== */
+date =
+new Date(value+"T00:00:00");
 
-document
-  .getElementById("shareButton")
-  .addEventListener(
-    "click",
-    async ()=>{
-
-      const url =
-        window.location.href;
-
-      const title =
-        document.title;
-
-      if(
-        navigator.share
-      ){
-
-        try{
-
-          await navigator.share({
-            title:title,
-            text:
-              "Undangan pernikahan "+
-              title,
-            url:url
-          });
-
-        }catch(e){}
-
-      }else{
-
-        try{
-
-          await navigator.clipboard.writeText(
-            url
-          );
-
-          alert(
-            "Link undangan berhasil disalin."
-          );
-
-        }catch(e){
-
-          prompt(
-            "Salin link undangan:",
-            url
-          );
-
-        }
-
-      }
-
-    }
-  );
+}
 
 
-/* =====================================================
-   KEYBOARD
-===================================================== */
+if(
+Number.isNaN(date.getTime())
+){
 
-document.addEventListener(
-  "keydown",
-  e=>{
+return value;
 
-    if(e.key==="ArrowRight"){
+}
 
-      goToPage(
-        Math.min(
-          currentPage+1,
-          2
-        )
-      );
 
-    }
+return new Intl.DateTimeFormat(
+"id-ID",
+{
+weekday:"long",
+day:"numeric",
+month:"long",
+year:"numeric"
+}
+).format(date);
 
-    if(e.key==="ArrowLeft"){
+}
 
-      goToPage(
-        Math.max(
-          currentPage-1,
-          0
-        )
-      );
 
-    }
+/* =========================
+   TEXT
+========================= */
 
-  }
-);
+function setText(id,value){
+
+const element =
+document.getElementById(id);
+
+if(element){
+
+element.textContent =
+value ?? "";
+
+}
+
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+function showError(message){
+
+loading.style.display="none";
+
+errorBox.style.display="flex";
+
+errorMessage.textContent =
+message;
+
+}
 
 </script>
 
